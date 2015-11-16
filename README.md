@@ -6,7 +6,7 @@ Python module to create simple ASCII tables
 
 This module is available on PypI, and has been packaged for several Linux/Unix platforms
 ([Debian](https://packages.debian.org/search?&searchon=names&keywords=python-texttable+),
-([FreeBSD](https://www.freebsd.org/cgi/ports.cgi?query=texttable&stype=all), Fedora, Suse...).
+[FreeBSD](https://www.freebsd.org/cgi/ports.cgi?query=texttable&stype=all), Fedora, Suse...).
 
 ## Documentation
 
