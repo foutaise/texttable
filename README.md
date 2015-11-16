@@ -24,9 +24,9 @@ DESCRIPTION
         table = Texttable()
         table.set_cols_align(["l", "r", "c"])
         table.set_cols_valign(["t", "m", "b"])
-        table.add_rows([ ["Name", "Age", "Nickname"], 
-                         ["Mr\nXavier\nHuon", 32, "Xav'"],
-                         ["Mr\nBaptiste\nClement", 1, "Baby"] ])
+        table.add_rows([["Name", "Age", "Nickname"], 
+                        ["Mr\nXavier\nHuon", 32, "Xav'"],
+                        ["Mr\nBaptiste\nClement", 1, "Baby"]])
         print table.draw() + "\n"
     
         table = Texttable()
@@ -39,12 +39,9 @@ DESCRIPTION
         table.set_cols_align(["l", "r", "r", "r", "l"])
         table.add_rows([["text",    "float", "exp", "int", "auto"],
                         ["abcd",    "67",    654,   89,    128.001],
-                        ["efghijk", 67.5434, .654,  89.6,
-12800000000000000000000.00023],
-                        ["lmn",     5e-78,   5e-78, 89.4,
-.000000000000128],
-                        ["opqrstu", .023,    5e+78, 92.,
-12800000000000000000000]])
+                        ["efghijk", 67.5434, .654,  89.6,  12800000000000000000000.00023],
+                        ["lmn",     5e-78,   5e-78, 89.4,  .000000000000128],
+                        ["opqrstu", .023,    5e+78, 92.,   12800000000000000000000]])
         print table.draw()
     
     Result:
@@ -75,10 +72,8 @@ CLASSES
      |  __init__(self, max_width=80)
      |      Constructor
      |      
-     |      - max_width is an integer, specifying the maximum width of the
-table
-     |      - if set to 0, size is unlimited, therefore cells won't be
-wrapped
+     |      - max_width is an integer, specifying the maximum width of the table
+     |      - if set to 0, size is unlimited, therefore cells won't be wrapped
      |  
      |  add_row(self, array)
      |      Add a row in the rows stack
@@ -88,11 +83,9 @@ wrapped
      |  add_rows(self, rows, header=True)
      |      Add several rows in the rows stack
      |      
-     |      - The 'rows' argument can be either an iterator returning
-arrays,
+     |      - The 'rows' argument can be either an iterator returning arrays,
      |        or a by-dimensional array
-     |      - 'header' specifies if the first row should be used as the
-header
+     |      - 'header' specifies if the first row should be used as the header
      |        of the table
      |  
      |  draw(self)
@@ -131,8 +124,7 @@ header
      |  set_cols_dtype(self, array)
      |      Set the desired columns datatype for the cols.
      |      
-     |      - the elements of the array should be either "a", "t", "f", "e"
-or "i":
+     |      - the elements of the array should be either "a", "t", "f", "e" or "i":
      |      
      |          * "a": automatic (try to use the most appropriate datatype)
      |          * "t": treat as text
@@ -182,8 +174,7 @@ or "i":
      |      
      |      - default value is set to 3
      |  
-     |
-----------------------------------------------------------------------
+     |  ----------------------------------------------------------------------
      |  Data and other attributes defined here:
      |  
      |  BORDER = 1
@@ -197,16 +188,15 @@ or "i":
 DATA
     __all__ = ['Texttable', 'ArraySizeError']
     __author__ = 'Gerome Fournier <jef(at)foutaise.org>'
-    __credits__ = 'Jeff Kowalczyk:\n    - textwrap improved import\n
-...et...
-    __license__ = 'GPL'
-    __version__ = '0.8.1'
+    __credits__ = 'Jeff Kowalczyk:\n    - textwrap improved import\n ...:\...
+    __license__ = 'LGPL'
+    __version__ = '0.8.3'
 
 VERSION
-    0.8.1
+    0.8.3
 
 AUTHOR
-    Gerome Fournier &lt;jef(at)foutaise.org>
+    Gerome Fournier <jef(at)foutaise.org>
 
 CREDITS
     Jeff Kowalczyk:
@@ -224,5 +214,10 @@ CREDITS
     
     Brian Peterson:
         - better handling of unicode errors
-
+    
+    Frank Sachsenheim:
+        - add Python 2/3-compatibility
+    
+    Maximilian Hils:
+        - fix minor bug for Python 3 compatibility
 ```
