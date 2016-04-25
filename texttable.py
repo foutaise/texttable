@@ -364,6 +364,8 @@ class Texttable:
         """
         try:
             f = float(x)
+            n = str(f)
+            if n == "nan" or n=="inf" or n=="-inf" : raise ValueError('Infinity or NaN considered as string')
         except:
             return str(x)
 
