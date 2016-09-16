@@ -25,14 +25,14 @@ Example:
     table = Texttable()
     table.set_cols_align(["l", "r", "c"])
     table.set_cols_valign(["t", "m", "b"])
-    table.add_rows([["Name", "Age", "Nickname"], 
+    table.add_rows([["Name", "Age", "Nickname"],
                     ["Mr\\nXavier\\nHuon", 32, "Xav'"],
                     ["Mr\\nBaptiste\\nClement", 1, "Baby"]])
     print table.draw() + "\\n"
 
     table = Texttable()
     table.set_deco(Texttable.HEADER)
-    table.set_cols_dtype(['t',  # text 
+    table.set_cols_dtype(['t',  # text
                           'f',  # float (decimal)
                           'e',  # float (exponent)
                           'i',  # integer
@@ -113,12 +113,30 @@ except ImportError:
 if sys.version >= '2.7':
     from functools import reduce
 
+def obj2unicode(obj):
+    """Return a unicode representation of a python object
+    """
+    try:
+        if sys.version >= '3.0':
+            return str(obj)
+        else:
+            if isinstance(obj, unicode):
+                return obj
+            else:
+                return str(obj).decode('utf')
+    except UnicodeDecodeError as strerror:
+        sys.stderr.write("UnicodeDecodeError exception for string '%s': %s\n" % (obj, strerror))
+        if sys.version >= '3.0':
+            return str(obj, 'utf', 'replace')
+        else:
+            return str(obj).decode('utf', 'replace')
+
 def len(iterable):
     """Redefining len here so it will be able to work with non-ASCII characters
     """
     if not isinstance(iterable, str):
         return iterable.__len__()
-    
+
     try:
         if sys.version >= '3.0':
             return len(str)
@@ -303,7 +321,7 @@ class Texttable:
 
         if not hasattr(self, "_dtype"):
             self._dtype = ["a"] * self._row_size
-            
+
         cells = []
         for i, x in enumerate(array):
             cells.append(self._str(i, x))
@@ -318,7 +336,7 @@ class Texttable:
           of the table
         """
 
-        # nb: don't use 'iter' on by-dimensional arrays, to get a 
+        # nb: don't use 'iter' on by-dimensional arrays, to get a
         #     usable code for python 2.1
         if header:
             if hasattr(rows, '__iter__') and hasattr(rows, 'next'):
@@ -359,13 +377,13 @@ class Texttable:
     def _str(self, i, x):
         """Handles string formatting of cell data
 
-            i - index of the cell datatype in self._dtype 
+            i - index of the cell datatype in self._dtype
             x - cell data to format
         """
         try:
             f = float(x)
         except:
-            return str(x)
+            return obj2unicode(x)
 
         n = self._precision
         dtype = self._dtype[i]
@@ -377,7 +395,7 @@ class Texttable:
         elif dtype == 'e':
             return '%.*e' % (n, f)
         elif dtype == 't':
-            return str(x)
+            return obj2unicode(x)
         else:
             if f - round(f) == 0:
                 if abs(f) > 1e8:
@@ -554,17 +572,6 @@ class Texttable:
         for cell, width in zip(line, self._width):
             array = []
             for c in cell.split('\n'):
-                try:
-                    if sys.version >= '3.0':
-                        c = str(c)
-                    else:
-                        c = unicode(c, 'utf')
-                except UnicodeDecodeError as strerror:
-                    sys.stderr.write("UnicodeDecodeError exception for string '%s': %s\n" % (c, strerror))
-                    if sys.version >= '3.0':
-                        c = str(c, 'utf', 'replace')
-                    else:
-                        c = unicode(c, 'utf', 'replace')
                 array.extend(textwrap.wrap(c, width))
             line_wrapped.append(array)
         max_cell_lines = reduce(max, list(map(len, line_wrapped)))
@@ -593,7 +600,7 @@ if __name__ == '__main__':
 
     table = Texttable()
     table.set_deco(Texttable.HEADER)
-    table.set_cols_dtype(['t',  # text 
+    table.set_cols_dtype(['t',  # text
                           'f',  # float (decimal)
                           'e',  # float (exponent)
                           'i',  # integer
