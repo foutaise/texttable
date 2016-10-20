@@ -27,7 +27,8 @@ Example:
     table.set_cols_valign(["t", "m", "b"])
     table.add_rows([["Name", "Age", "Nickname"],
                     ["Mr\\nXavier\\nHuon", 32, "Xav'"],
-                    ["Mr\\nBaptiste\\nClement", 1, "Baby"]])
+                    ["Mr\\nBaptiste\\nClement", 1, "Baby"],
+                    ["Mme\nLouise\nBourgeau", 28, "Lou\n\nLoue"]])
     print table.draw() + "\\n"
 
     table = Texttable()
@@ -57,6 +58,10 @@ Result:
     | Mr       |     |          |
     | Baptiste |   1 |          |
     | Clement  |     |   Baby   |
+    +----------+-----+----------+
+    | Mme      |     |   Lou    |
+    | Louise   |  28 |          |
+    | Bourgeau |     |   Loue   |
     +----------+-----+----------+
 
     text   float       exp      int     auto
@@ -572,7 +577,8 @@ class Texttable:
         for cell, width in zip(line, self._width):
             array = []
             for c in cell.split('\n'):
-                array.extend(textwrap.wrap(c, width))
+                c = " " if len(c)==0 else c
+                array.extend(textwrap.wrap(c, width, drop_whitespace=False))
             line_wrapped.append(array)
         max_cell_lines = reduce(max, list(map(len, line_wrapped)))
         for cell, valign in zip(line_wrapped, self._valign):
@@ -595,7 +601,8 @@ if __name__ == '__main__':
     table.set_cols_valign(["t", "m", "b"])
     table.add_rows([["Name", "Age", "Nickname"],
                     ["Mr\nXavier\nHuon", 32, "Xav'"],
-                    ["Mr\nBaptiste\nClement", 1, "Baby"]])
+                    ["Mr\nBaptiste\nClement", 1, "Baby"],
+                    ["Mme\nLouise\nBourgeau", 28, "Lou\n\nLoue"]])
     print(table.draw() + "\n")
 
     table = Texttable()
