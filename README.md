@@ -26,7 +26,8 @@ DESCRIPTION
         table.set_cols_valign(["t", "m", "b"])
         table.add_rows([["Name", "Age", "Nickname"], 
                         ["Mr\nXavier\nHuon", 32, "Xav'"],
-                        ["Mr\nBaptiste\nClement", 1, "Baby"]])
+                        ["Mr\nBaptiste\nClement", 1, "Baby"],
+						["Mme\nLouise\nBourgeau", 28, "Lou\n\nLoue"]])
         print table.draw() + "\n"
     
         table = Texttable()
@@ -56,6 +57,10 @@ DESCRIPTION
         | Mr       |     |          |
         | Baptiste |   1 |          |
         | Clement  |     |   Baby   |
+        +----------+-----+----------+
+        | Mme      |     |   Lou    |
+        | Louise   |  28 |          |
+        | Bourgeau |     |   Loue   |
         +----------+-----+----------+
     
         text   float       exp      int     auto
