@@ -27,7 +27,8 @@ Example:
     table.set_cols_valign(["t", "m", "b"])
     table.add_rows([["Name", "Age", "Nickname"],
                     ["Mr\\nXavier\\nHuon", 32, "Xav'"],
-                    ["Mr\\nBaptiste\\nClement", 1, "Baby"]])
+                    ["Mr\\nBaptiste\\nClement", 1, "Baby"],
+                    ["Mme\\nLouise\\nBourgeau", 28, "Lou\\n\\nLoue"]])
     print table.draw() + "\\n"
 
     table = Texttable()
@@ -58,6 +59,10 @@ Result:
     | Baptiste |   1 |          |
     | Clement  |     |   Baby   |
     +----------+-----+----------+
+    | Mme      |     |   Lou    |
+    | Louise   |  28 |          |
+    | Bourgeau |     |   Loue   |
+    +----------+-----+----------+
 
     text   float       exp      int     auto
     ===========================================
@@ -71,7 +76,7 @@ __all__ = ["Texttable", "ArraySizeError"]
 
 __author__ = 'Gerome Fournier <jef(at)foutaise.org>'
 __license__ = 'LGPL'
-__version__ = '0.8.4'
+__version__ = '0.8.6'
 __credits__ = """\
 Jeff Kowalczyk:
     - textwrap improved import
@@ -94,6 +99,9 @@ Frank Sachsenheim:
 
 Maximilian Hils:
     - fix minor bug for Python 3 compatibility
+
+frinkelpi
+    - preserve empty lines
 """
 
 import sys
@@ -572,7 +580,10 @@ class Texttable:
         for cell, width in zip(line, self._width):
             array = []
             for c in cell.split('\n'):
-                array.extend(textwrap.wrap(c, width))
+                if c.strip() == "":
+                    array.append("")
+                else:
+                    array.extend(textwrap.wrap(c, width))
             line_wrapped.append(array)
         max_cell_lines = reduce(max, list(map(len, line_wrapped)))
         for cell, valign in zip(line_wrapped, self._valign):
@@ -595,7 +606,8 @@ if __name__ == '__main__':
     table.set_cols_valign(["t", "m", "b"])
     table.add_rows([["Name", "Age", "Nickname"],
                     ["Mr\nXavier\nHuon", 32, "Xav'"],
-                    ["Mr\nBaptiste\nClement", 1, "Baby"]])
+                    ["Mr\nBaptiste\nClement", 1, "Baby"],
+                    ["Mme\nLouise\nBourgeau", 28, "Lou\n \nLoue"]])
     print(table.draw() + "\n")
 
     table = Texttable()
