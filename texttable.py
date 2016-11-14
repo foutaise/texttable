@@ -76,7 +76,7 @@ __all__ = ["Texttable", "ArraySizeError"]
 
 __author__ = 'Gerome Fournier <jef(at)foutaise.org>'
 __license__ = 'LGPL'
-__version__ = '0.8.6'
+__version__ = '0.8.7'
 __credits__ = """\
 Jeff Kowalczyk:
     - textwrap improved import
@@ -100,7 +100,7 @@ Frank Sachsenheim:
 Maximilian Hils:
     - fix minor bug for Python 3 compatibility
 
-frinkelpi
+frinkelpi:
     - preserve empty lines
 """
 
@@ -317,7 +317,7 @@ class Texttable:
         """
 
         self._check_row_size(array)
-        self._header = list(map(str, array))
+        self._header = list(map(obj2unicode, array))
 
     def add_row(self, array):
         """Add a row in the rows stack
