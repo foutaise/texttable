@@ -38,11 +38,12 @@ Example:
                           'i',  # integer
                           'a']) # automatic
     table.set_cols_align(["l", "r", "r", "r", "l"])
-    table.add_rows([["text",    "float", "exp", "int", "auto"],
-                    ["abcd",    "67",    654,   89,    128.001],
-                    ["efghijk", 67.5434, .654,  89.6,  12800000000000000000000.00023],
-                    ["lmn",     5e-78,   5e-78, 89.4,  .000000000000128],
-                    ["opqrstu", .023,    5e+78, 92.,   12800000000000000000000]])
+    rows = [["text",    "float", "exp", "int", "auto"],
+            ["abcd",    "67",    654,   89,    128.001],
+            ["efghijk", 67.5434, .654,  89.6,  12800000000000000000000.00023],
+            ["lmn",     5e-78,   5e-78, 89.4,  .000000000000128],
+            ["opqrstu", .023,    5e+78, 92.,   12800000000000000000000]]
+    table.add_rows(rows)
     print table.draw()
 
 Result:
@@ -132,7 +133,8 @@ def obj2unicode(obj):
             else:
                 return str(obj).decode('utf')
     except UnicodeDecodeError as strerror:
-        sys.stderr.write("UnicodeDecodeError exception for string '%s': %s\n" % (obj, strerror))
+        error_template = "UnicodeDecodeError exception for string '%s': %s\n"
+        sys.stderr.write(error_template % (obj, strerror))
         if sys.version >= '3.0':
             return str(obj, 'utf', 'replace')
         else:
