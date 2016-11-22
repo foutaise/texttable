@@ -19,9 +19,8 @@
 
 DESCRIPTION = "module for creating simple ASCII tables"
 
-LONG_DESCRIPTION = """\
-texttable is a module to generate a formatted text table, using ASCII
-characters."""
+readme = open('README.rst').read()
+history = open('CHANGES.rst').read().replace('.. :changelog:', '')
 
 import sys
 
@@ -39,7 +38,7 @@ setup(
     license = "LGPL",
     py_modules = ["texttable"],
     description = DESCRIPTION,
-    long_description = LONG_DESCRIPTION,
+    long_description = readme + '\n\n' + history,
     platforms = "any",
     classifiers = [
         'Development Status :: 4 - Beta',
