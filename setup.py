@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 #
 # texttable - module for creating simple ASCII tables
 # Copyright (C) 2003-2015 Gerome Fournier <jef(at)foutaise.org>
@@ -15,21 +14,19 @@
 #
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 
 DESCRIPTION = "module for creating simple ASCII tables"
 
-LONG_DESCRIPTION = """\
-texttable is a module to generate a formatted text table, using ASCII
-characters."""
+readme = open('README.rst').read()
+history = open('CHANGES.rst').read().replace('.. :changelog:', '')
 
 import sys
 
-from distutils.core import setup
-if sys.version < '2.2.3':
-    from distutils.dist import DistributionMetadata
-    DistributionMetadata.classifiers = None
-    DistributionMetadata.download_url = None
+try:
+    from setuptools import setup
+except ImportError:
+    from distutils.core import setup
 
 setup(
     name = "texttable",
@@ -37,23 +34,29 @@ setup(
     author = "Gerome Fournier", 
     author_email = "jef(at)foutaise.org",
     url = "https://github.com/foutaise/texttable/",
-    download_url = "https://github.com/foutaise/texttable/archive/v0.8.7.tar.gz",
     license = "LGPL",
     py_modules = ["texttable"],
     description = DESCRIPTION,
-    long_description = LONG_DESCRIPTION,
+    long_description = readme + '\n\n' + history,
     platforms = "any",
     classifiers = [
         'Development Status :: 4 - Beta',
         'Environment :: Console',
         'Intended Audience :: Developers',
         'Intended Audience :: End Users/Desktop',
-        'License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)',
+        'License :: OSI Approved :: GNU Library or ' +
+          'Lesser General Public License (LGPL)',
         'Operating System :: Microsoft :: Windows',
         'Operating System :: POSIX',
         'Operating System :: MacOS',
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Topic :: Text Processing',
         'Topic :: Utilities',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
     ]
 )

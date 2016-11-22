@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 #
 # texttable - module for creating simple ASCII tables
 # Copyright (C) 2003-2015 Gerome Fournier <jef(at)foutaise.org>
@@ -39,11 +38,12 @@ Example:
                           'i',  # integer
                           'a']) # automatic
     table.set_cols_align(["l", "r", "r", "r", "l"])
-    table.add_rows([["text",    "float", "exp", "int", "auto"],
-                    ["abcd",    "67",    654,   89,    128.001],
-                    ["efghijk", 67.5434, .654,  89.6,  12800000000000000000000.00023],
-                    ["lmn",     5e-78,   5e-78, 89.4,  .000000000000128],
-                    ["opqrstu", .023,    5e+78, 92.,   12800000000000000000000]])
+    rows = [["text",    "float", "exp", "int", "auto"],
+            ["abcd",    "67",    654,   89,    128.001],
+            ["efghijk", 67.5434, .654,  89.6,  12800000000000000000000.00023],
+            ["lmn",     5e-78,   5e-78, 89.4,  .000000000000128],
+            ["opqrstu", .023,    5e+78, 92.,   12800000000000000000000]]
+    table.add_rows(rows)
     print table.draw()
 
 Result:
@@ -133,7 +133,8 @@ def obj2unicode(obj):
             else:
                 return str(obj).decode('utf')
     except UnicodeDecodeError as strerror:
-        sys.stderr.write("UnicodeDecodeError exception for string '%s': %s\n" % (obj, strerror))
+        error_template = "UnicodeDecodeError exception for string '%s': %s\n"
+        sys.stderr.write(error_template % (obj, strerror))
         if sys.version >= '3.0':
             return str(obj, 'utf', 'replace')
         else:
@@ -598,29 +599,3 @@ class Texttable:
             else:
                 cell.extend([""] * (max_cell_lines - len(cell)))
         return line_wrapped
-
-
-if __name__ == '__main__':
-    table = Texttable()
-    table.set_cols_align(["l", "r", "c"])
-    table.set_cols_valign(["t", "m", "b"])
-    table.add_rows([["Name", "Age", "Nickname"],
-                    ["Mr\nXavier\nHuon", 32, "Xav'"],
-                    ["Mr\nBaptiste\nClement", 1, "Baby"],
-                    ["Mme\nLouise\nBourgeau", 28, "Lou\n \nLoue"]])
-    print(table.draw() + "\n")
-
-    table = Texttable()
-    table.set_deco(Texttable.HEADER)
-    table.set_cols_dtype(['t',  # text
-                          'f',  # float (decimal)
-                          'e',  # float (exponent)
-                          'i',  # integer
-                          'a']) # automatic
-    table.set_cols_align(["l", "r", "r", "r", "l"])
-    table.add_rows([["text",    "float", "exp", "int", "auto"],
-                    ["abcd",    "67",    654,   89,    128.001],
-                    ["efghijk", 67.5434, .654,  89.6,  12800000000000000000000.00023],
-                    ["lmn",     5e-78,   5e-78, 89.4,  .000000000000128],
-                    ["opqrstu", .023,    5e+78, 92.,   12800000000000000000000]])
-    print(table.draw())
