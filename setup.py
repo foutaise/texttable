@@ -25,11 +25,10 @@ characters."""
 
 import sys
 
-from distutils.core import setup
-if sys.version < '2.2.3':
-    from distutils.dist import DistributionMetadata
-    DistributionMetadata.classifiers = None
-    DistributionMetadata.download_url = None
+try:
+    from setuptools import setup
+except ImportError:
+    from distutils.core import setup
 
 setup(
     name = "texttable",
@@ -37,7 +36,6 @@ setup(
     author = "Gerome Fournier", 
     author_email = "jef(at)foutaise.org",
     url = "https://github.com/foutaise/texttable/",
-    download_url = "https://github.com/foutaise/texttable/archive/v0.8.7.tar.gz",
     license = "LGPL",
     py_modules = ["texttable"],
     description = DESCRIPTION,
@@ -55,5 +53,11 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Topic :: Text Processing',
         'Topic :: Utilities',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
     ]
 )
