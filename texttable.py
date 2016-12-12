@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-#
 # texttable - module for creating simple ASCII tables
 # Copyright (C) 2003-2015 Gerome Fournier <jef(at)foutaise.org>
 #
