@@ -226,6 +226,6 @@ CREDITS
     Maximilian Hils:
         - fix minor bug for Python 3 compatibility
 
-    frinkelpi
+    frinkelpi:
         - preserve empty lines
 ```
