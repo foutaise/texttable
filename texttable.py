@@ -119,37 +119,34 @@ except ImportError:
 if sys.version >= '2.7':
     from functools import reduce
 
+if sys.version >= '3.0':
+    str_type = str
+    bytes_type = bytes
+else:
+    str_type = unicode
+    bytes_type = str
+
+
 def obj2unicode(obj):
     """Return a unicode representation of a python object
     """
-    try:
-        if sys.version >= '3.0':
-            return str(obj)
-        else:
-            if isinstance(obj, unicode):
-                return obj
-            else:
-                return str(obj).decode('utf')
-    except UnicodeDecodeError as strerror:
-        sys.stderr.write("UnicodeDecodeError exception for string '%s': %s\n" % (obj, strerror))
-        if sys.version >= '3.0':
-            return str(obj, 'utf', 'replace')
-        else:
-            return str(obj).decode('utf', 'replace')
+    if isinstance(obj, str_type):
+        return obj
+    else:
+        try:
+            return str_type(bytes_type(obj), 'utf')
+        except UnicodeDecodeError as strerror:
+            sys.stderr.write("UnicodeDecodeError exception for string '%s': %s\n" % (obj, strerror))
+            return str_type(bytes_type(obj), 'utf', 'replace')
+
 
 def len(iterable):
     """Redefining len here so it will be able to work with non-ASCII characters
     """
-    if not isinstance(iterable, str):
+    if isinstance(iterable, str_type):
         return iterable.__len__()
-
-    try:
-        if sys.version >= '3.0':
-            return len(str)
-        else:
-            return len(unicode(iterable, 'utf'))
-    except:
-        return iterable.__len__()
+    else:
+        return str_type(iterable, 'utf').__len__()
 
 
 class ArraySizeError(Exception):
