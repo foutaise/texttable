@@ -119,36 +119,33 @@ except ImportError:
 if sys.version >= '2.7':
     from functools import reduce
 
+if sys.version >= '3.0':
+    unicode_type = str
+    bytes_type = bytes
+else:
+    unicode_type = unicode
+    bytes_type = str
+
+
 def obj2unicode(obj):
     """Return a unicode representation of a python object
     """
-    try:
-        if sys.version >= '3.0':
-            return str(obj)
-        else:
-            if isinstance(obj, unicode):
-                return obj
-            else:
-                return str(obj).decode('utf')
-    except UnicodeDecodeError as strerror:
-        sys.stderr.write("UnicodeDecodeError exception for string '%s': %s\n" % (obj, strerror))
-        if sys.version >= '3.0':
-            return str(obj, 'utf', 'replace')
-        else:
-            return str(obj).decode('utf', 'replace')
+    if isinstance(obj, unicode_type):
+        return obj
+    else:
+        try:
+            return unicode_type(obj, 'utf')
+        except UnicodeDecodeError as strerror:
+            sys.stderr.write("UnicodeDecodeError exception for string '%s': %s\n" % (obj, strerror))
+            return unicode_type(obj, 'utf', 'replace')
+
 
 def len(iterable):
     """Redefining len here so it will be able to work with non-ASCII characters
     """
-    if not isinstance(iterable, str):
-        return iterable.__len__()
-
-    try:
-        if sys.version >= '3.0':
-            return len(str)
-        else:
-            return len(unicode(iterable, 'utf'))
-    except:
+    if isinstance(iterable, bytes_type):
+        return obj2unicode(iterable).__len__()
+    else:
         return iterable.__len__()
 
 
