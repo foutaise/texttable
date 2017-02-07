@@ -123,7 +123,7 @@ if sys.version >= '2.7':
 def unicode_width(s, width={'F': 2, 'H': 1, 'W': 2, 'Na': 1, 'A': 2, 'N': 1}):
     """Return a unicode width
     """
-    return sum(width[east_asian_width(c)] for c in s)
+    return sum(width[east_asian_width(c)] for c in obj2unicode(s))
 
 def obj2unicode(obj):
     """Return a unicode representation of a python object
