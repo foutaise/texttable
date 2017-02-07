@@ -104,6 +104,7 @@ frinkelpi:
 
 import sys
 import string
+import unicodedata
 
 try:
     if sys.version >= '2.3':
@@ -143,8 +144,13 @@ def obj2unicode(obj):
 def len(iterable):
     """Redefining len here so it will be able to work with non-ASCII characters
     """
-    if isinstance(iterable, bytes_type):
-        return obj2unicode(iterable).__len__()
+    if isinstance(iterable, bytes_type) or isinstance(iterable, unicode_type):
+        unicode_data = obj2unicode(iterable)
+        if hasattr(unicodedata, 'east_asian_width'):
+            w = unicodedata.east_asian_width
+            return sum([w(c) in 'WF' and 2 or 1 for c in unicode_data])
+        else:
+            return unicode_data.__len__()
     else:
         return iterable.__len__()
 
