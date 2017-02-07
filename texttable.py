@@ -104,6 +104,7 @@ frinkelpi:
 
 import sys
 import string
+from unicodedata import east_asian_width
 
 try:
     if sys.version >= '2.3':
@@ -118,6 +119,11 @@ except ImportError:
 
 if sys.version >= '2.7':
     from functools import reduce
+
+def unicode_width(s, width={'F': 2, 'H': 1, 'W': 2, 'Na': 1, 'A': 2, 'N': 1}):
+    """Return a unicode width
+    """
+    return sum(width[east_asian_width(c)] for c in obj2unicode(s))
 
 def obj2unicode(obj):
     """Return a unicode representation of a python object
@@ -145,7 +151,7 @@ def len(iterable):
 
     try:
         if sys.version >= '3.0':
-            return len(str)
+            return unicode_width(str)
         else:
             return len(unicode(iterable, 'utf'))
     except:
@@ -495,7 +501,7 @@ class Texttable:
             length = 0
             parts = line.split('\t')
             for part, i in zip(parts, list(range(1, len(parts) + 1))):
-                length = length + len(part)
+                length = length + unicode_width(part)
                 if i < len(parts):
                     length = (length//8 + 1) * 8
             maxi = max(maxi, length)
@@ -552,7 +558,7 @@ class Texttable:
             for cell, width, align in zip(line, self._width, self._align):
                 length += 1
                 cell_line = cell[i]
-                fill = width - len(cell_line)
+                fill = width - unicode_width(cell_line)
                 if isheader:
                     align = "c"
                 if align == "r":
