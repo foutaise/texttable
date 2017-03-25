@@ -1,0 +1,7 @@
+/.cache/
+/.coverage
+/.tox/
+/MANIFEST
+/__pycache__/
+*.egg-info/
+*.pyc

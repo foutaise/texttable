@@ -33,8 +33,8 @@ if sys.version < '2.2.3':
 
 setup(
     name = "texttable",
-    version = "0.8.7",
-    author = "Gerome Fournier", 
+    version = "0.8.8",
+    author = "Gerome Fournier",
     author_email = "jef(at)foutaise.org",
     url = "https://github.com/foutaise/texttable/",
     download_url = "https://github.com/foutaise/texttable/archive/v0.8.7.tar.gz",
@@ -55,5 +55,11 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Topic :: Text Processing',
         'Topic :: Utilities',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
     ]
 )
