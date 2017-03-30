@@ -71,14 +71,12 @@ Result:
 """
 
 from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
 
 __all__ = ["Texttable", "ArraySizeError"]
 
 __author__ = 'Gerome Fournier <jef(at)foutaise.org>'
 __license__ = 'LGPL'
-__version__ = '0.8.7'
+__version__ = '0.8.8'
 __credits__ = """\
 Jeff Kowalczyk:
     - textwrap improved import
