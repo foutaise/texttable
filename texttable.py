@@ -70,6 +70,10 @@ Result:
     mnop   0.023    5.000e+78   92    1.280e+22
 """
 
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
+
 __all__ = ["Texttable", "ArraySizeError"]
 
 __author__ = 'Gerome Fournier <jef(at)foutaise.org>'
@@ -133,12 +137,14 @@ def obj2unicode(obj):
     """
     if isinstance(obj, unicode_type):
         return obj
-    else:
+    elif isinstance(obj, bytes_type):
         try:
-            return unicode_type(obj, 'utf')
+            return unicode_type(obj, 'utf-8')
         except UnicodeDecodeError as strerror:
             sys.stderr.write("UnicodeDecodeError exception for string '%s': %s\n" % (obj, strerror))
-            return unicode_type(obj, 'utf', 'replace')
+            return unicode_type(obj, 'utf-8', 'replace')
+    else:
+        return unicode_type(obj)
 
 
 def len(iterable):
@@ -524,10 +530,12 @@ class Texttable:
                 except (TypeError, IndexError):
                     maxi.append(self._len_cell(cell))
         items = len(maxi)
-        length = reduce(lambda x, y: x+y, maxi)
+        length = sum(maxi)
         if self._max_width and length + items * 3 + 1 > self._max_width:
-            maxi = [(self._max_width - items * 3 -1) // items \
-                    for n in range(items)]
+            maxi = [
+                int(round(self._max_width / (length + items * 3 + 1) * n))
+                for n in maxi
+            ]
         self._width = maxi
 
     def _check_align(self):
