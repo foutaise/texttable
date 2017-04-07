@@ -87,15 +87,15 @@ def test_exceeding_max_width():
         ["key", "value"],
         [1,     "a"],
         [2,     "b"],
-        [3,     "very long, very long, very long"],
+        [3,     "very long, very long, very long, very long"],
     ])
     assert clean(table.draw()) == dedent('''\
-        key               value
-        ====================================
+        key                 value
+        =======================================
         1     a
         2     b
-        3     very long, very long, very
-              long
+        3     very long, very long, very long,
+              very long
     ''')
 
 

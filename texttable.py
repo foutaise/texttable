@@ -70,7 +70,6 @@ Result:
     mnop   0.023    5.000e+78   92    1.280e+22
 """
 
-from __future__ import division
 
 __all__ = ["Texttable", "ArraySizeError"]
 
@@ -516,6 +515,29 @@ class Texttable:
         computed to fit, and cells will be wrapped.
         """
 
+        def allocate_space(n, l):
+            """allocate n to len(l) numbers according to their protion in l
+            """
+            s = sum(l)
+            # assert s>n
+            floor = {}
+            result = []
+            for i, v in enumerate(l):
+                q, r = divmod(n*v, s)
+                result.append(q)
+                # keep those who can share remaining space
+                if r:
+                    floor[i]=v
+            s = sum(result)
+            assert (n-s)<=len(floor)
+            # sort by value and save their indexes
+            floor = [i for i, _ in sorted(floor.items(), key=lambda x: x[1])]
+            # allocate the remaining space from the smallest
+            for i in range(n-s):
+                result[floor[i]] += 1
+            # assert sum(result) == n
+            return result
+
         if hasattr(self, "_width"):
             return
         maxi = []
@@ -529,11 +551,9 @@ class Texttable:
                     maxi.append(self._len_cell(cell))
         items = len(maxi)
         length = sum(maxi)
-        if self._max_width and length + items * 3 + 1 > self._max_width:
-            maxi = [
-                int(round(self._max_width / (length + items * 3 + 1) * n))
-                for n in maxi
-            ]
+        extra = items + (items -1) * 2 + [0, 3][self._has_border()]
+        if self._max_width and length > self._max_width - extra:
+            maxi = allocate_space(self._max_width - extra, maxi)
         self._width = maxi
 
     def _check_align(self):
