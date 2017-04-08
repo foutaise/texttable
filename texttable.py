@@ -527,13 +527,25 @@ class Texttable:
                     maxi[i] = max(maxi[i], self._len_cell(cell))
                 except (TypeError, IndexError):
                     maxi.append(self._len_cell(cell))
-        items = len(maxi)
-        length = sum(maxi)
-        if self._max_width and length + items * 3 + 1 > self._max_width:
-            maxi = [
-                int(round(self._max_width / (length + items * 3 + 1) * n))
-                for n in maxi
-            ]
+
+        ncols = len(maxi)
+        content_width = sum(maxi)
+        deco_width = 3*(ncols-1) + [0,4][self._has_border()]
+        if self._max_width and (content_width + deco_width) > self._max_width:
+            """ content too wide to fit the expected max_width
+            let's recompute maximum cell width for each cell
+            """
+            if self._max_width < (ncols + deco_width):
+                raise ValueError('max_width too low to render data')
+            available_width = self._max_width - deco_width
+            newmaxi = [0] * ncols
+            i = 0
+            while available_width > 0:
+                if newmaxi[i] < maxi[i]:
+                    newmaxi[i] += 1
+                    available_width -= 1
+                i = (i + 1) % ncols
+            maxi = newmaxi
         self._width = maxi
 
     def _check_align(self):
