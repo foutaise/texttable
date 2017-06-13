@@ -386,6 +386,23 @@ class Texttable:
         if self._has_border():
             out += self._hline()
         return out[:-1]
+    
+    def draw_as_tsv(self, quote=False):
+        """Draw the table as tab-separated values, convenient for exporting
+        to e.g. spreadsheet programs. Note that alignment and border parameters
+        will be ignored when rendering as TSV.
+        
+            quote - if True, wrap all data fields in double quotes (")
+        
+        - the table is returned as a whole string
+        """
+        
+        out = ""
+        if self._header:
+            out += self._draw_tsv_line(self._header, quote=quote)
+        for row in self._rows:
+            out += self._draw_tsv_line(row, quote=quote)
+        return out[:-1]
 
     def _str(self, i, x):
         """Handles string formatting of cell data
@@ -587,6 +604,15 @@ class Texttable:
                     out += " %s " % [space, self._char_vert][self._has_vlines()]
             out += "%s\n" % ['', space + self._char_vert][self._has_border()]
         return out
+    
+    def _draw_tsv_line(self, line, quote):
+        out = ""
+        for cell in line:
+            if quote:
+                out += '"' + cell + '"' + '\t'
+            else:
+                out += cell + '\t'
+        return out[:-1] + '\n'
 
     def _splitit(self, line, isheader):
         """Split each element of line to fit the column width
