@@ -33,7 +33,7 @@ if sys.version < '2.2.3':
 
 setup(
     name = "texttable",
-    version = "0.9.0",
+    version = "0.9.1",
     author = "Gerome Fournier",
     author_email = "jef(at)foutaise.org",
     url = "https://github.com/foutaise/texttable/",
