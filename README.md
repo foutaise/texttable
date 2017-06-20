@@ -74,11 +74,12 @@ CLASSES
     class Texttable
      |  Methods defined here:
      |
-     |  __init__(self, max_width=80)
+     |  __init__(self, max_width=80, precision)
      |      Constructor
      |
-     |      - max_width is an integer, specifying the maximum width of the table
-     |      - if set to 0, size is unlimited, therefore cells won't be wrapped
+     |      - max_width is an integer, specifying the maximum width of the table.
+     |        if set to 0, size is unlimited, therefore cells won't be wrapped
+     |      - precision is an integer, specifying the precision of numerical values
      |
      |  add_row(self, array)
      |      Add a row in the rows stack
@@ -195,10 +196,10 @@ DATA
     __author__ = 'Gerome Fournier <jef(at)foutaise.org>'
     __credits__ = 'Jeff Kowalczyk:\n    - textwrap improved import\n ...at...
     __license__ = 'LGPL'
-    __version__ = '0.9.0'
+    __version__ = '0.9.1'
 
 VERSION
-    0.9.0
+    0.9.1
 
 AUTHOR
     Gerome Fournier <jef(at)foutaise.org>
