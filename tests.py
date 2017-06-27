@@ -1,4 +1,5 @@
 import re
+import sys
 from textwrap import dedent
 from texttable import Texttable
 
@@ -132,3 +133,30 @@ def test_obj2unicode():
         2     1
         3     None
     ''')
+
+def test_combining_char():
+    if sys.version >= '3':
+        abar = "a\u0304" # unicode_type
+        u_dedent = dedent
+    else:
+        abar = "a\xcc\x84" # bytes_type
+        def u_dedent(b):
+            return unicode(dedent(b), 'utf-8')
+    table = Texttable()
+    table.set_cols_align(["l", "r", "r"])
+    table.add_rows([
+        ["str", "code-point\nlength", "display\nwidth"],
+        [abar, 2, 1],
+        ["a", 1, 1],
+    ])
+    t = '''\
+        +-----+------------+---------+
+        | str | code-point | display |
+        |     |   length   |  width  |
+        +=====+============+=========+
+        | %s   |          2 |       1 |
+        +-----+------------+---------+
+        | a   |          1 |       1 |
+        +-----+------------+---------+
+    ''' % abar
+    assert clean(table.draw()) == u_dedent(t)
