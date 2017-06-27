@@ -1,10 +1,12 @@
+#coding: utf-8
+
 import re
+import sys
 from textwrap import dedent
 from texttable import Texttable
 
 def clean(text):
     return re.sub(r'( +)$', '', text, flags=re.MULTILINE) + '\n'
-
 
 def test_texttable():
     table = Texttable()
@@ -34,7 +36,6 @@ def test_texttable():
         +----------+-----+----------+
     ''')
 
-
 def test_texttable_header():
     table = Texttable()
     table.set_deco(Texttable.HEADER)
@@ -62,7 +63,6 @@ def test_texttable_header():
         opqrstu    0.023   5.000e+78    92   1.280e+22
     ''')
 
-
 def test_set_cols_width():
     table = Texttable()
     table.set_deco(Texttable.HEADER)
@@ -78,7 +78,6 @@ def test_set_cols_width():
         1            a
         2            b
     ''')
-
 
 def test_exceeding_max_width():
     table = Texttable(max_width=35)
@@ -131,4 +130,28 @@ def test_obj2unicode():
         1     a
         2     1
         3     None
+    ''')
+
+def test_combining_char():
+    if sys.version >= '3':
+        u_dedent = dedent
+    else:
+        def u_dedent(b):
+           return unicode(dedent(b), 'utf-8')
+    table = Texttable()
+    table.set_cols_align(["l", "r", "r"])
+    table.add_rows([
+        ["str", "code-point\nlength", "display\nwidth"],
+        ["ā", 2, 1],
+        ["a", 1, 1],
+    ])
+    assert clean(table.draw()) == u_dedent('''\
+        +-----+------------+---------+
+        | str | code-point | display |
+        |     |   length   |  width  |
+        +=====+============+=========+
+        | ā   |          2 |       1 |
+        +-----+------------+---------+
+        | a   |          1 |       1 |
+        +-----+------------+---------+
     ''')
