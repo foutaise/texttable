@@ -130,6 +130,10 @@ else:
     bytes_type = str
 
 
+def enum(a_list):
+    return [(idx, a_list[idx]) for idx in range(len(a_list))]
+
+
 def obj2unicode(obj):
     """Return a unicode representation of a python object
     """
@@ -205,6 +209,12 @@ class Texttable:
         self._row_size = None
         self._header = []
         self._rows = []
+        self.set_cell_formatter()
+
+    def set_cell_formatter(self, fmt_func=None):
+        if fmt_func is None:
+            fmt_func = lambda x, y, cell: cell
+        self._cell_fmt = fmt_func
 
     def set_chars(self, array):
         """Set the characters used to draw lines between rows and columns
@@ -374,13 +384,13 @@ class Texttable:
         if self._has_border():
             out += self._hline()
         if self._header:
-            out += self._draw_line(self._header, isheader=True)
+            out += self._draw_line(self._header, 0)
             if self._has_header():
                 out += self._hline_header()
         length = 0
-        for row in self._rows:
+        for idx, row in enum(self._rows):
             length += 1
-            out += self._draw_line(row)
+            out += self._draw_line(row, idx+1)
             if self._has_hlines() and length < len(self._rows):
                 out += self._hline()
         if self._has_border():
@@ -489,13 +499,13 @@ class Texttable:
             l += "\n"
         return l
 
-    def _len_cell(self, cell):
+    def _len_cell(self, x, y, cell):
         """Return the width of the cell
 
         Special characters are taken into account to return the width of the
         cell, such like newlines and tabs
         """
-
+        cell = self._cell_fmt(x, y, cell)
         cell_lines = cell.split('\n')
         maxi = 0
         for line in cell_lines:
@@ -520,13 +530,13 @@ class Texttable:
             return
         maxi = []
         if self._header:
-            maxi = [ self._len_cell(x) for x in self._header ]
-        for row in self._rows:
-            for cell,i in zip(row, list(range(len(row)))):
+            maxi = [self._len_cell(i, 0, x) for i, x in enum(self._header)]
+        for idx, row in enum(self._rows):
+            for cell, i in zip(row, list(range(len(row)))):
                 try:
-                    maxi[i] = max(maxi[i], self._len_cell(cell))
+                    maxi[i] = max(maxi[i], self._len_cell(i, idx, cell))
                 except (TypeError, IndexError):
-                    maxi.append(self._len_cell(cell))
+                    maxi.append(self._len_cell(i, idx, cell))
 
         ncols = len(maxi)
         content_width = sum(maxi)
@@ -557,13 +567,13 @@ class Texttable:
         if not hasattr(self, "_valign"):
             self._valign = ["t"] * self._row_size
 
-    def _draw_line(self, line, isheader=False):
+    def _draw_line(self, line, line_nr):
         """Draw a line
 
         Loop over a single cell length, over all the cells
         """
-
-        line = self._splitit(line, isheader)
+        isheader = line_nr == 0
+        line = self._splitit(line, line_nr)
         space = " "
         out = ""
         for i in range(len(line[0])):
@@ -588,15 +598,17 @@ class Texttable:
             out += "%s\n" % ['', space + self._char_vert][self._has_border()]
         return out
 
-    def _splitit(self, line, isheader):
+    def _splitit(self, line, line_nr):
         """Split each element of line to fit the column width
 
         Each element is turned into a list, result of the wrapping of the
         string to the desired width
         """
-
+        isheader = line_nr == 0
         line_wrapped = []
-        for cell, width in zip(line, self._width):
+        idxs = range(len(line))
+        for idx, cell, width in zip(idxs, line, self._width):
+            cell = self._cell_fmt(idx, line_nr, cell)
             array = []
             for c in cell.split('\n'):
                 if c.strip() == "":
