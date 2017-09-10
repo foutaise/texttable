@@ -109,9 +109,9 @@ import string
 import unicodedata
 
 try:
-    if sys.version >= '2.3':
+    if sys.version_info >= (2, 3):
         import textwrap
-    elif sys.version >= '2.2':
+    elif sys.version_info >= (2, 2):
         from optparse import textwrap
     else:
         from optik import textwrap
@@ -119,10 +119,10 @@ except ImportError:
     sys.stderr.write("Can't import textwrap module!\n")
     raise
 
-if sys.version >= '2.7':
+if sys.version_info >= (2, 7):
     from functools import reduce
 
-if sys.version >= '3.0':
+if sys.version_info >= (3, 0):
     unicode_type = str
     bytes_type = bytes
 else:
