@@ -76,7 +76,7 @@ __all__ = ["Texttable", "ArraySizeError"]
 
 __author__ = 'Gerome Fournier <jef(at)foutaise.org>'
 __license__ = 'LGPL'
-__version__ = '0.8.8'
+__version__ = '0.9.1'
 __credits__ = """\
 Jeff Kowalczyk:
     - textwrap improved import
