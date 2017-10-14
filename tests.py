@@ -63,6 +63,36 @@ def test_texttable_header():
         opqrstu    0.023   5.000e+78    92   1.280e+22
     ''')
 
+
+def test_texttable_cell_fmt():
+    table = Texttable()
+    table.set_deco(Texttable.HEADER)
+    table.set_cols_dtype([
+        't',  # text
+        'f',  # float (decimal)
+        'e',  # float (exponent)
+        'i',  # integer
+        'a',  # automatic
+    ])
+    table.set_cell_formatter( lambda x, y, cell: cell+'s' if (x == 2  and y != 0) else cell)
+    table.set_cols_align(["l", "r", "r", "r", "l"])
+    table.add_rows([
+        ["text",    "float", "exp", "int", "auto"],
+        ["abcd",    "67",    654,   89,    128.001],
+        ["efghijk", 67.5434, .654,  89.6,  12800000000000000000000.00023],
+        ["lmn",     5e-78,   5e-78, 89.4,  .000000000000128],
+        ["opqrstu", .023,    5e+78, 92.,   12800000000000000000000],
+    ])
+    assert clean(table.draw()) == dedent('''\
+         text     float       exp       int     auto
+        ===============================================
+        abcd      67.000   6.540e+02s    89   128.001
+        efghijk   67.543   6.540e-01s    90   1.280e+22
+        lmn        0.000   5.000e-78s    89   0.000
+        opqrstu    0.023   5.000e+78s    92   1.280e+22
+    ''')
+
+
 def test_set_cols_width():
     table = Texttable()
     table.set_deco(Texttable.HEADER)
