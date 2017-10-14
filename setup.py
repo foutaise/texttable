@@ -33,11 +33,11 @@ if sys.version < '2.2.3':
 
 setup(
     name = "texttable",
-    version = "0.9.1",
+    version = "1.0.0",
     author = "Gerome Fournier",
     author_email = "jef(at)foutaise.org",
     url = "https://github.com/foutaise/texttable/",
-    download_url = "https://github.com/foutaise/texttable/archive/v0.9.1.tar.gz",
+    download_url = "https://github.com/foutaise/texttable/archive/v1.0.0.tar.gz",
     license = "LGPL",
     py_modules = ["texttable"],
     description = DESCRIPTION,
