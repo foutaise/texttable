@@ -152,7 +152,7 @@ def len(iterable):
         unicode_data = obj2unicode(iterable)
         if hasattr(unicodedata, 'east_asian_width'):
             w = unicodedata.east_asian_width
-            return sum([w(c) in 'WF' and 2 or 0 if unicodedata.combining(c) else 1 for c in unicode_data])
+            return sum([w(c) in 'WF' and 2 or (0 if unicodedata.combining(c) else 1) for c in unicode_data])
         else:
             return unicode_data.__len__()
     else:

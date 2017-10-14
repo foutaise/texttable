@@ -105,14 +105,14 @@ def test_exceeding_max_width2():
         [22, "++++++++"],
     ])
     assert clean(table.draw()) == dedent('''\
-	+----+-------+
-	| a  |   b   |
-	+====+=======+
-	| 1  | +     |
-	+----+-------+
-	| 22 | +++++ |
-	|    | +++   |
-	+----+-------+
+        +----+-------+
+        | a  |   b   |
+        +====+=======+
+        | 1  | +     |
+        +----+-------+
+        | 22 | +++++ |
+        |    | +++   |
+        +----+-------+
     ''')
 
 def test_obj2unicode():
@@ -154,4 +154,23 @@ def test_combining_char():
         +-----+------------+---------+
         | a   |          1 |       1 |
         +-----+------------+---------+
+    ''')
+
+def test_combining_char2():
+    if sys.version >= '3':
+        u_dedent = dedent
+    else:
+        def u_dedent(b):
+           return unicode(dedent(b), 'utf-8')
+    table = Texttable()
+    table.add_rows([
+        ["a", "b", "c"],
+        ["诶诶诶", "bbb", "西西西"],
+    ], False)
+    assert clean(table.draw()) == u_dedent('''\
+        +--------+-----+--------+
+        | a      | b   | c      |
+        +--------+-----+--------+
+        | 诶诶诶 | bbb | 西西西 |
+        +--------+-----+--------+
     ''')
