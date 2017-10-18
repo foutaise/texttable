@@ -272,13 +272,15 @@ class Texttable:
     def set_cols_dtype(self, array):
         """Set the desired columns datatype for the cols.
 
-        - the elements of the array should be either "a", "t", "f", "e" or "i":
+        - the elements of the array should be either a callable or any of "a",
+          "t", "f", "e" or "i":
 
             * "a": automatic (try to use the most appropriate datatype)
             * "t": treat as text
             * "f": treat as float in decimal format
             * "e": treat as float in exponential format
             * "i": treat as int
+            * a callable: should return formatted string for any value given
 
         - by default, automatic datatyping is used for each column
         """
@@ -387,41 +389,93 @@ class Texttable:
             out += self._hline()
         return out[:-1]
 
+    @classmethod
+    def _fmt_int(cls, x, **kw):
+        """Integer formatting class-method.
+
+        - x parameter is ignored. Instead kw-argument f being x float-converted
+          will be used.
+        """
+        f = kw.pop('f')
+        return str(int(round(f)))
+
+    @classmethod
+    def _fmt_float(cls, x, **kw):
+        """Float formatting class-method.
+
+        - x parameter is ignored. Instead kw-argument f being x float-converted
+          will be used.
+
+        - precision will be taken from `n` kw-argument.
+        """
+        f = kw.pop('f')
+        n = kw.pop('n')
+        return '%.*f' % (n, f)
+
+    @classmethod
+    def _fmt_exp(cls, x, **kw):
+        """Exponential formatting class-method.
+
+        - x parameter is ignored. Instead kw-argument f being x float-converted
+          will be used.
+
+        - precision will be taken from `n` kw-argument.
+        """
+        f = kw.pop('f')
+        n = kw.pop('n')
+        return '%.*e' % (n, f)
+
+    @classmethod
+    def _fmt_obj(cls, x, **kw):
+        """String formatting class-method.
+        """
+        return obj2unicode(x)
+
+    @classmethod
+    def _fmt_auto(cls, x, **kw):
+        """auto formatting class-method.
+        """
+        n = kw.pop('n')
+        f = kw.pop('f', None)
+        if f is None:
+            return obj2unicode(x)
+
+        if abs(f) > 1e8:
+            return cls._fmt_exp(x, f=f, n=n)
+        if f - round(f) == 0:
+            return cls._fmt_int(x, f=f, n=n)
+        return cls._fmt_float(x, f=f, n=n)
+
+
     def _str(self, i, x):
         """Handles string formatting of cell data
 
             i - index of the cell datatype in self._dtype
             x - cell data to format
         """
+        FMT = {
+            'a':self._fmt_auto,
+            'i':self._fmt_int,
+            'f':self._fmt_float,
+            'e':self._fmt_exp,
+            't':self._fmt_obj,
+            }
+
         n = self._precision
         dtype = self._dtype[i]
-        if callable(dtype):
-            return dtype(x)
+        if not callable(dtype):
+            dtype = FMT[dtype]
 
         try:
             f = float(x)
         except:
-            return obj2unicode(x)
+            f = None
 
-        if dtype == 'i':
-            return str(int(round(f)))
-        elif dtype == 'f':
-            return '%.*f' % (n, f)
-        elif dtype == 'e':
-            return '%.*e' % (n, f)
-        elif dtype == 't':
-            return obj2unicode(x)
-        else:
-            if f - round(f) == 0:
-                if abs(f) > 1e8:
-                    return '%.*e' % (n, f)
-                else:
-                    return str(int(round(f)))
-            else:
-                if abs(f) > 1e8:
-                    return '%.*e' % (n, f)
-                else:
-                    return '%.*f' % (n, f)
+        try:
+            return dtype(x, f=f, n=n)
+        except:
+            return dtype(x)
+
 
     def _check_row_size(self, array):
         """Check that the specified array fits the previous rows size
