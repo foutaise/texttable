@@ -5,6 +5,12 @@ import sys
 from textwrap import dedent
 from texttable import Texttable
 
+if sys.version >= '3':
+    u_dedent = dedent
+else:
+    def u_dedent(b):
+       return unicode(dedent(b), 'utf-8')
+
 def clean(text):
     return re.sub(r'( +)$', '', text, flags=re.MULTILINE) + '\n'
 
@@ -133,11 +139,6 @@ def test_obj2unicode():
     ''')
 
 def test_combining_char():
-    if sys.version >= '3':
-        u_dedent = dedent
-    else:
-        def u_dedent(b):
-           return unicode(dedent(b), 'utf-8')
     table = Texttable()
     table.set_cols_align(["l", "r", "r"])
     table.add_rows([
@@ -157,11 +158,6 @@ def test_combining_char():
     ''')
 
 def test_combining_char2():
-    if sys.version >= '3':
-        u_dedent = dedent
-    else:
-        def u_dedent(b):
-           return unicode(dedent(b), 'utf-8')
     table = Texttable()
     table.add_rows([
         ["a", "b", "c"],
@@ -173,4 +169,30 @@ def test_combining_char2():
         +--------+-----+--------+
         | 诶诶诶 | bbb | 西西西 |
         +--------+-----+--------+
+    ''')
+
+
+def test_user_dtype():
+    table = Texttable()
+
+    table.set_cols_align(["l", "r", "r"])
+    table.set_cols_dtype([
+        'a',  # automatic
+        lambda s:str(s)+"s", # user-def
+        lambda s:('%s'%s) if s>=0 else '[%s]'%(-s),  # user-def
+    ])
+    table.add_rows([
+        ["str", "code-point\nlength", "display\nwidth"],
+        ["a", 2, 1],
+        ["a", 1,-3],
+    ])
+    assert clean(table.draw()) == u_dedent('''\
+        +-----+------------+---------+
+        | str | code-point | display |
+        |     |   length   |  width  |
+        +=====+============+=========+
+        | a   |         2s |       1 |
+        +-----+------------+---------+
+        | a   |         1s |     [3] |
+        +-----+------------+---------+
     ''')

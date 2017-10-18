@@ -393,6 +393,10 @@ class Texttable:
             i - index of the cell datatype in self._dtype
             x - cell data to format
         """
+        dtype = self._dtype[i]
+        if callable(dtype):
+            return dtype(x)
+
         try:
             f = float(x)
         except:
