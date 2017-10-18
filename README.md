@@ -63,12 +63,12 @@ DESCRIPTION
         | Bourgeau |     |   Loue   |
         +----------+-----+----------+
 
-        text   float       exp      int     auto
-        ===========================================
-        abcd   67.000   6.540e+02   89    128.001
-        efgh   67.543   6.540e-01   90    1.280e+22
-        ijkl   0.000    5.000e-78   89    0.000
-        mnop   0.023    5.000e+78   92    1.280e+22
+         text     float       exp      int     auto
+        ==============================================
+        abcd      67.000   6.540e+02    89   128.001
+        efghijk   67.543   6.540e-01    90   1.280e+22
+        lmn        0.000   5.000e-78    89   0.000
+        opqrstu    0.023   5.000e+78    92   1.280e+22
 
 CLASSES
     class Texttable
@@ -129,13 +129,15 @@ CLASSES
      |  set_cols_dtype(self, array)
      |      Set the desired columns datatype for the cols.
      |
-     |      - the elements of the array should be either "a", "t", "f", "e" or "i":
+     |      - the elements of the array should be either a callable or any of:
+     |        "a", "t", "f", "e" or "i":
      |
      |          * "a": automatic (try to use the most appropriate datatype)
      |          * "t": treat as text
      |          * "f": treat as float in decimal format
      |          * "e": treat as float in exponential format
      |          * "i": treat as int
+     |          * a callable: should return formatted string for any value given
      |
      |      - by default, automatic datatyping is used for each column
      |

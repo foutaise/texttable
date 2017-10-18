@@ -272,13 +272,15 @@ class Texttable:
     def set_cols_dtype(self, array):
         """Set the desired columns datatype for the cols.
 
-        - the elements of the array should be either "a", "t", "f", "e" or "i":
+        - the elements of the array should be either a callable or any of "a",
+          "t", "f", "e" or "i":
 
             * "a": automatic (try to use the most appropriate datatype)
             * "t": treat as text
             * "f": treat as float in decimal format
             * "e": treat as float in exponential format
             * "i": treat as int
+            * a callable: should return formatted string for any value given
 
         - by default, automatic datatyping is used for each column
         """
@@ -393,13 +395,15 @@ class Texttable:
             i - index of the cell datatype in self._dtype
             x - cell data to format
         """
+        n = self._precision
+        dtype = self._dtype[i]
+        if callable(dtype):
+            return dtype(x)
+
         try:
             f = float(x)
         except:
             return obj2unicode(x)
-
-        n = self._precision
-        dtype = self._dtype[i]
 
         if dtype == 'i':
             return str(int(round(f)))
