@@ -393,6 +393,7 @@ class Texttable:
             i - index of the cell datatype in self._dtype
             x - cell data to format
         """
+        n = self._precision
         dtype = self._dtype[i]
         if callable(dtype):
             return dtype(x)
@@ -401,9 +402,6 @@ class Texttable:
             f = float(x)
         except:
             return obj2unicode(x)
-
-        n = self._precision
-        dtype = self._dtype[i]
 
         if dtype == 'i':
             return str(int(round(f)))
