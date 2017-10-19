@@ -426,7 +426,7 @@ class Texttable:
         return '%.*e' % (n, f)
 
     @classmethod
-    def _fmt_obj(cls, x, **kw):
+    def _fmt_text(cls, x, **kw):
         """String formatting class-method.
         """
         return obj2unicode(x)
@@ -438,7 +438,7 @@ class Texttable:
         n = kw.pop('n')
         f = kw.pop('f', None)
         if f is None:
-            return obj2unicode(x)
+            return cls._fmt_text(x)
 
         if abs(f) > 1e8:
             return cls._fmt_exp(x, f=f, n=n)
@@ -458,7 +458,7 @@ class Texttable:
             'i':self._fmt_int,
             'f':self._fmt_float,
             'e':self._fmt_exp,
-            't':self._fmt_obj,
+            't':self._fmt_text,
             }
 
         n = self._precision
