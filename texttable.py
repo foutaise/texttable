@@ -171,6 +171,11 @@ class ArraySizeError(Exception):
         return self.msg
 
 
+class FallbackToText(Exception):
+    """Used for failed conversion to float"""
+    pass
+
+
 class Texttable:
 
     BORDER = 1
@@ -390,14 +395,21 @@ class Texttable:
         return out[:-1]
 
     @classmethod
+    def _to_float(cls, x):
+        if x is None:
+            raise FallbackToText()
+        try:
+            return float(x)
+        except ValueError:
+            raise FallbackToText()
+
+    @classmethod
     def _fmt_int(cls, x, **kw):
         """Integer formatting class-method.
 
-        - x parameter is ignored. Instead kw-argument f being x float-converted
-          will be used.
+        - x will be float-converted and then used.
         """
-        f = kw.pop('f')
-        return str(int(round(f)))
+        return str(int(round(cls._to_float(x))))
 
     @classmethod
     def _fmt_float(cls, x, **kw):
@@ -408,9 +420,8 @@ class Texttable:
 
         - precision will be taken from `n` kw-argument.
         """
-        f = kw.pop('f')
-        n = kw.pop('n')
-        return '%.*f' % (n, f)
+        n = kw.get('n')
+        return '%.*f' % (n, cls._to_float(x))
 
     @classmethod
     def _fmt_exp(cls, x, **kw):
@@ -421,31 +432,24 @@ class Texttable:
 
         - precision will be taken from `n` kw-argument.
         """
-        f = kw.pop('f')
-        n = kw.pop('n')
-        return '%.*e' % (n, f)
+        n = kw.get('n')
+        return '%.*e' % (n, cls._to_float(x))
 
     @classmethod
     def _fmt_text(cls, x, **kw):
-        """String formatting class-method.
-        """
+        """String formatting class-method."""
         return obj2unicode(x)
 
     @classmethod
     def _fmt_auto(cls, x, **kw):
-        """auto formatting class-method.
-        """
-        n = kw.pop('n')
-        f = kw.pop('f', None)
-        if f is None:
-            return cls._fmt_text(x)
+        """auto formatting class-method."""
+        f = cls._to_float(x)
 
         if abs(f) > 1e8:
-            return cls._fmt_exp(x, f=f, n=n)
+            return cls._fmt_exp(x, **kw)
         if f - round(f) == 0:
-            return cls._fmt_int(x, f=f, n=n)
-        return cls._fmt_float(x, f=f, n=n)
-
+            return cls._fmt_int(x, **kw)
+        return cls._fmt_float(x, **kw)
 
     def _str(self, i, x):
         """Handles string formatting of cell data
@@ -467,14 +471,12 @@ class Texttable:
             dtype = FMT[dtype]
 
         try:
-            f = float(x)
-        except:
-            f = None
-
-        try:
-            return dtype(x, f=f, n=n)
-        except:
-            return dtype(x)
+            try:
+                return dtype(x, n=n)
+            except TypeError:
+                return dtype(x)
+        except FallbackToText:
+            return self._fmt_text(x)
 
 
     def _check_row_size(self, array):
