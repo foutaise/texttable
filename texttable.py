@@ -444,12 +444,14 @@ class Texttable:
     def _fmt_auto(cls, x, **kw):
         """auto formatting class-method."""
         f = cls._to_float(x)
-
         if abs(f) > 1e8:
-            return cls._fmt_exp(x, **kw)
-        if f - round(f) == 0:
-            return cls._fmt_int(x, **kw)
-        return cls._fmt_float(x, **kw)
+            fn = cls._fmt_exp
+        else:
+            if f - round(f) == 0:
+                fn = cls._fmt_int
+            else:
+                fn = cls._fmt_float
+        return fn(x, **kw)
 
     def _str(self, i, x):
         """Handles string formatting of cell data
