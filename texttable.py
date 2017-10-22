@@ -76,7 +76,7 @@ __all__ = ["Texttable", "ArraySizeError"]
 
 __author__ = 'Gerome Fournier <jef(at)foutaise.org>'
 __license__ = 'LGPL'
-__version__ = '1.0.0'
+__version__ = '1.1.0'
 __credits__ = """\
 Jeff Kowalczyk:
     - textwrap improved import
@@ -277,8 +277,8 @@ class Texttable:
     def set_cols_dtype(self, array):
         """Set the desired columns datatype for the cols.
 
-        - the elements of the array should be either a callable or any of "a",
-          "t", "f", "e" or "i":
+        - the elements of the array should be either a callable or any of
+          "a", "t", "f", "e", "i" or a callable:
 
             * "a": automatic (try to use the most appropriate datatype)
             * "t": treat as text
@@ -469,17 +469,13 @@ class Texttable:
 
         n = self._precision
         dtype = self._dtype[i]
-        if not callable(dtype):
-            dtype = FMT[dtype]
-
         try:
-            try:
-                return dtype(x, n=n)
-            except TypeError:
+            if callable(dtype):
                 return dtype(x)
+            else:
+                return FMT[dtype](x, n=n)
         except FallbackToText:
             return self._fmt_text(x)
-
 
     def _check_row_size(self, array):
         """Check that the specified array fits the previous rows size
