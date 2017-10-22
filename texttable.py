@@ -278,7 +278,7 @@ class Texttable:
         """Set the desired columns datatype for the cols.
 
         - the elements of the array should be either a callable or any of
-          "a", "t", "f", "e", "i" or a callable:
+          "a", "t", "f", "e" or "i":
 
             * "a": automatic (try to use the most appropriate datatype)
             * "t": treat as text
