@@ -35,7 +35,7 @@ setup(
     name = "texttable",
     version = "1.0.0",
     author = "Gerome Fournier",
-    author_email = "jef(at)foutaise.org",
+    author_email = "jef@foutaise.org",
     url = "https://github.com/foutaise/texttable/",
     download_url = "https://github.com/foutaise/texttable/archive/v1.0.0.tar.gz",
     license = "LGPL",
