@@ -400,7 +400,7 @@ class Texttable:
             raise FallbackToText()
         try:
             return float(x)
-        except ValueError:
+        except (TypeError, ValueError):
             raise FallbackToText()
 
     @classmethod
