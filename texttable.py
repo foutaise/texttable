@@ -105,22 +105,10 @@ frinkelpi:
 """
 
 import sys
-import string
+import textwrap
 import unicodedata
+from functools import reduce
 
-try:
-    if sys.version_info >= (2, 3):
-        import textwrap
-    elif sys.version_info >= (2, 2):
-        from optparse import textwrap
-    else:
-        from optik import textwrap
-except ImportError:
-    sys.stderr.write("Can't import textwrap module!\n")
-    raise
-
-if sys.version_info >= (2, 7):
-    from functools import reduce
 
 if sys.version_info >= (3, 0):
     unicode_type = str
@@ -150,11 +138,9 @@ def len(iterable):
     """
     if isinstance(iterable, bytes_type) or isinstance(iterable, unicode_type):
         unicode_data = obj2unicode(iterable)
-        if hasattr(unicodedata, 'east_asian_width'):
-            w = unicodedata.east_asian_width
-            return sum([w(c) in 'WF' and 2 or (0 if unicodedata.combining(c) else 1) for c in unicode_data])
-        else:
-            return unicode_data.__len__()
+        w = unicodedata.east_asian_width
+        return sum([w(c) in 'WF' and 2 or (
+            0 if unicodedata.combining(c) else 1) for c in unicode_data])
     else:
         return iterable.__len__()
 
