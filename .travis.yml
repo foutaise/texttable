@@ -8,7 +8,7 @@ python:
 sudo: false
 
 install:
- - pip install pycodestyle pyflakes tox-travis
+ - pip install tox-travis
 
 script:
  # Tests
@@ -16,8 +16,13 @@ script:
 
 after_script:
  # Static analysis
+ - pip install pycodestyle pyflakes
  - pyflakes .
  - pycodestyle --statistics --count .
+
+after_success:
+ - pip install codecov
+ - codecov
 
 matrix:
   fast_finish: true
