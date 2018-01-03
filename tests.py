@@ -196,3 +196,20 @@ def test_user_dtype():
         | a   |         1s |     [3] |
         +-----+------------+---------+
     ''')
+
+def test_cjkwarp():
+    table = Texttable()
+
+    table.set_cols_align(["r", "l"])
+    table.add_rows([
+        ["Name", 'Discuz! 6.x/7.x 全局变量防御绕过导致命令执行'],
+        ["Description", '由于php5.3.x版本里php.ini的设置里request_order默认值为GP，导致Discuz! 6.x/7.x 全局变量防御绕过漏洞'],
+    ], header = False)
+    assert clean(table.draw()) == u_dedent('''\
+        +-------------+----------------------------------------------------------------+
+        |        Name | Discuz! 6.x/7.x 全局变量防御绕过导致命令执行                   |
+        +-------------+----------------------------------------------------------------+
+        | Description | 由于php5.3.x版本里php.ini的设置里request_order默认值为GP，导致 |
+        |             | Discuz! 6.x/7.x 全局变量防御绕过漏洞                           |
+        +-------------+----------------------------------------------------------------+
+    ''')
