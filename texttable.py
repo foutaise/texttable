@@ -76,7 +76,7 @@ __all__ = ["Texttable", "ArraySizeError"]
 
 __author__ = 'Gerome Fournier <jef(at)foutaise.org>'
 __license__ = 'LGPL'
-__version__ = '1.1.1'
+__version__ = '1.2.1'
 __credits__ = """\
 Jeff Kowalczyk:
     - textwrap improved import
@@ -109,8 +109,24 @@ import textwrap
 import unicodedata
 from functools import reduce
 
+# define a text wrapping function to wrap some text
+# to a specific width:
+# - use cjkwrap if available (better CJK support)
+# - fallback to textwrap otherwise
+try:
+    import cjkwrap
+    def textwrapper(txt, width):
+        return cjkwrap.wrap(txt, width)
+except ImportError:
+    try:
+        import textwrap
+        def textwrapper(txt, width):
+            return textwrap.wrap(txt, width)
+    except ImportError:
+        sys.stderr.write("Can't import textwrap module!\n")
+        raise
 
-if sys.version_info >= (3, 0):
+if sys.version_info.major >= 3:
     unicode_type = str
     bytes_type = bytes
 else:
@@ -644,7 +660,7 @@ class Texttable:
                 if c.strip() == "":
                     array.append("")
                 else:
-                    array.extend(textwrap.wrap(c, width))
+                    array.extend(textwrapper(c, width))
             line_wrapped.append(array)
         max_cell_lines = reduce(max, list(map(len, line_wrapped)))
         for cell, valign in zip(line_wrapped, self._valign):

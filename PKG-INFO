@@ -1,12 +1,12 @@
 Metadata-Version: 1.0
 Name: texttable
-Version: 1.1.1
+Version: 1.2.1
 Summary: module for creating simple ASCII tables
 Home-page: https://github.com/foutaise/texttable/
 Author: Gerome Fournier
 Author-email: jef@foutaise.org
 License: LGPL
-Download-URL: https://github.com/foutaise/texttable/archive/v1.1.1.tar.gz
+Download-URL: https://github.com/foutaise/texttable/archive/v1.2.1.tar.gz
 Description: texttable is a module to generate a formatted text table, using ASCII
         characters.
 Platform: any
@@ -18,6 +18,11 @@ Classifier: License :: OSI Approved :: GNU Library or Lesser General Public Lice
 Classifier: Operating System :: Microsoft :: Windows
 Classifier: Operating System :: POSIX
 Classifier: Operating System :: MacOS
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
 Classifier: Topic :: Software Development :: Libraries :: Python Modules
 Classifier: Topic :: Text Processing
 Classifier: Topic :: Utilities
