@@ -19,9 +19,8 @@
 
 DESCRIPTION = "module for creating simple ASCII tables"
 
-LONG_DESCRIPTION = """\
-texttable is a module to generate a formatted text table, using ASCII
-characters."""
+with open("README.md") as f:
+    LONG_DESCRIPTION = f.read()
 
 import sys
 
@@ -42,6 +41,7 @@ setup(
     py_modules = ["texttable"],
     description = DESCRIPTION,
     long_description = LONG_DESCRIPTION,
+    long_description_content_type="text/markdown",
     platforms = "any",
     classifiers = [
         'Development Status :: 4 - Beta',
