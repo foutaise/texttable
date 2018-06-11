@@ -1,0 +1,28 @@
+language: python
+
+python:
+ - "3.6"
+ - "3.5"
+ - "2.7"
+
+sudo: false
+
+install:
+ - pip install tox-travis
+
+script:
+ # Tests
+ - tox
+
+after_script:
+ # Static analysis
+ - pip install pycodestyle pyflakes
+ - pyflakes .
+ - pycodestyle --statistics --count .
+
+after_success:
+ - pip install codecov
+ - codecov
+
+matrix:
+  fast_finish: true
