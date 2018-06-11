@@ -25,18 +25,13 @@ with open("README.md") as f:
 import sys
 
 from distutils.core import setup
-if sys.version < '2.2.3':
-    from distutils.dist import DistributionMetadata
-    DistributionMetadata.classifiers = None
-    DistributionMetadata.download_url = None
-
 setup(
     name = "texttable",
-    version = "1.2.1",
+    version = "1.3.0",
     author = "Gerome Fournier",
     author_email = "jef@foutaise.org",
     url = "https://github.com/foutaise/texttable/",
-    download_url = "https://github.com/foutaise/texttable/archive/v1.2.1.tar.gz",
+    download_url = "https://github.com/foutaise/texttable/archive/v1.3.0.tar.gz",
     license = "LGPL",
     py_modules = ["texttable"],
     description = DESCRIPTION,

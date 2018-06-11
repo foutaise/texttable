@@ -76,7 +76,7 @@ __all__ = ["Texttable", "ArraySizeError"]
 
 __author__ = 'Gerome Fournier <jef(at)foutaise.org>'
 __license__ = 'LGPL'
-__version__ = '1.2.1'
+__version__ = '1.3.0'
 __credits__ = """\
 Jeff Kowalczyk:
     - textwrap improved import
@@ -105,7 +105,6 @@ frinkelpi:
 """
 
 import sys
-import string
 import unicodedata
 
 # define a text wrapping function to wrap some text
@@ -118,20 +117,12 @@ try:
         return cjkwrap.wrap(txt, width)
 except ImportError:
     try:
-        if sys.version_info >= (2, 3):
-            import textwrap
-        elif sys.version_info >= (2, 2):
-            from optparse import textwrap
-        else:
-            from optik import textwrap
-        def textwrapper(txt, width):
-            return textwrap.wrap(txt, width)
+        import textwrap
     except ImportError:
         sys.stderr.write("Can't import textwrap module!\n")
         raise
 
-if sys.version_info >= (2, 7):
-    from functools import reduce
+from functools import reduce
 
 if sys.version_info >= (3, 0):
     unicode_type = str
@@ -161,11 +152,8 @@ def len(iterable):
     """
     if isinstance(iterable, bytes_type) or isinstance(iterable, unicode_type):
         unicode_data = obj2unicode(iterable)
-        if hasattr(unicodedata, 'east_asian_width'):
-            w = unicodedata.east_asian_width
-            return sum([w(c) in 'WF' and 2 or (0 if unicodedata.combining(c) else 1) for c in unicode_data])
-        else:
-            return unicode_data.__len__()
+        w = unicodedata.east_asian_width
+        return sum([w(c) in 'WF' and 2 or (0 if unicodedata.combining(c) else 1) for c in unicode_data])
     else:
         return iterable.__len__()
 
