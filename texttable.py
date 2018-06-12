@@ -76,7 +76,7 @@ __all__ = ["Texttable", "ArraySizeError"]
 
 __author__ = 'Gerome Fournier <jef(at)foutaise.org>'
 __license__ = 'LGPL'
-__version__ = '1.3.0'
+__version__ = '1.3.1'
 __credits__ = """\
 Jeff Kowalczyk:
     - textwrap improved import
@@ -118,6 +118,8 @@ try:
 except ImportError:
     try:
         import textwrap
+        def textwrapper(txt, width):
+            return textwrap.wrap(txt, width)
     except ImportError:
         sys.stderr.write("Can't import textwrap module!\n")
         raise
