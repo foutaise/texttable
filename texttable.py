@@ -76,7 +76,7 @@ __all__ = ["Texttable", "ArraySizeError"]
 
 __author__ = 'Gerome Fournier <jef(at)foutaise.org>'
 __license__ = 'LGPL'
-__version__ = '1.3.1'
+__version__ = '1.4.0'
 __credits__ = """\
 Jeff Kowalczyk:
     - textwrap improved import
@@ -248,6 +248,19 @@ class Texttable:
         """
 
         self._deco = deco
+
+    def set_header_align(self, array):
+        """Set the desired header alignment
+
+        - the elements of the array should be either "l", "c" or "r":
+
+            * "l": column flushed left
+            * "c": column centered
+            * "r": column flushed right
+        """
+
+        self._check_row_size(array)
+        self._header_align = array
 
     def set_cols_align(self, array):
         """Set the desired columns alignment
@@ -609,6 +622,8 @@ class Texttable:
         """Check if alignment has been specified, set default one if not
         """
 
+        if not hasattr(self, "_header_align"):
+            self._header_align = ["c"] * self._row_size
         if not hasattr(self, "_align"):
             self._align = ["l"] * self._row_size
         if not hasattr(self, "_valign"):
@@ -632,7 +647,7 @@ class Texttable:
                 cell_line = cell[i]
                 fill = width - len(cell_line)
                 if isheader:
-                    align = "c"
+                    align = self._header_align[length - 1]
                 if align == "r":
                     out += fill * space + cell_line
                 elif align == "c":

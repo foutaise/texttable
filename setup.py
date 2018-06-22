@@ -27,11 +27,11 @@ import sys
 from distutils.core import setup
 setup(
     name = "texttable",
-    version = "1.3.1",
+    version = "1.4.0",
     author = "Gerome Fournier",
     author_email = "jef@foutaise.org",
     url = "https://github.com/foutaise/texttable/",
-    download_url = "https://github.com/foutaise/texttable/archive/v1.3.1.tar.gz",
+    download_url = "https://github.com/foutaise/texttable/archive/v1.4.0.tar.gz",
     license = "LGPL",
     py_modules = ["texttable"],
     description = DESCRIPTION,
