@@ -211,6 +211,7 @@ class Texttable:
         self._row_size = None
         self._header = []
         self._rows = []
+        return self
 
     def set_chars(self, array):
         """Set the characters used to draw lines between rows and columns
@@ -229,6 +230,7 @@ class Texttable:
         array = [ x[:1] for x in [ str(s) for s in array ] ]
         (self._char_horiz, self._char_vert,
             self._char_corner, self._char_header) = array
+        return self
 
     def set_deco(self, deco):
         """Set the table decoration
@@ -248,6 +250,7 @@ class Texttable:
         """
 
         self._deco = deco
+        return self
 
     def set_header_align(self, array):
         """Set the desired header alignment
@@ -261,6 +264,7 @@ class Texttable:
 
         self._check_row_size(array)
         self._header_align = array
+        return self
 
     def set_cols_align(self, array):
         """Set the desired columns alignment
@@ -274,6 +278,7 @@ class Texttable:
 
         self._check_row_size(array)
         self._align = array
+        return self
 
     def set_cols_valign(self, array):
         """Set the desired columns vertical alignment
@@ -287,6 +292,7 @@ class Texttable:
 
         self._check_row_size(array)
         self._valign = array
+        return self
 
     def set_cols_dtype(self, array):
         """Set the desired columns datatype for the cols.
@@ -306,6 +312,7 @@ class Texttable:
 
         self._check_row_size(array)
         self._dtype = array
+        return self
 
     def set_cols_width(self, array):
         """Set the desired columns width
@@ -325,6 +332,7 @@ class Texttable:
             sys.stderr.write("Wrong argument in column width specification\n")
             raise
         self._width = array
+        return self
 
     def set_precision(self, width):
         """Set the desired precision for float/exponential formats
@@ -337,6 +345,7 @@ class Texttable:
         if not type(width) is int or width < 0:
             raise ValueError('width must be an integer greater then 0')
         self._precision = width
+        return self
 
     def header(self, array):
         """Specify the header of the table
@@ -344,6 +353,7 @@ class Texttable:
 
         self._check_row_size(array)
         self._header = list(map(obj2unicode, array))
+        return self
 
     def add_row(self, array):
         """Add a row in the rows stack
@@ -360,6 +370,7 @@ class Texttable:
         for i, x in enumerate(array):
             cells.append(self._str(i, x))
         self._rows.append(cells)
+        return self
 
     def add_rows(self, rows, header=True):
         """Add several rows in the rows stack
@@ -380,6 +391,7 @@ class Texttable:
                 rows = rows[1:]
         for row in rows:
             self.add_row(row)
+        return self
 
     def draw(self):
         """Draw the table
