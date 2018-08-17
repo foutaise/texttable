@@ -121,6 +121,44 @@ def test_exceeding_max_width2():
         +----+-------+
     ''')
 
+def test_exceeding_max_width3():
+    table = Texttable()
+    table.set_max_width(35)
+    table.set_deco(Texttable.HEADER)
+    table.add_rows([
+        ["key", "value"],
+        [1,     "a"],
+        [2,     "b"],
+        [3,     "very long, very long, very long"],
+    ])
+    assert clean(table.draw()) == dedent('''\
+        key               value
+        ===================================
+        1     a
+        2     b
+        3     very long, very long, very
+              long
+    ''')
+
+def test_exceeding_max_width4():
+    table = Texttable()
+    table.set_max_width(14)
+    table.add_rows([
+        ["a", "b"],
+        [1, "+"],
+        [22, "++++++++"],
+    ])
+    assert clean(table.draw()) == dedent('''\
+        +----+-------+
+        | a  |   b   |
+        +====+=======+
+        | 1  | +     |
+        +----+-------+
+        | 22 | +++++ |
+        |    | +++   |
+        +----+-------+
+    ''')
+
 def test_obj2unicode():
     table = Texttable()
     table.set_deco(Texttable.HEADER)
@@ -221,6 +259,7 @@ def test_cjkwarp():
 def test_chaining():
     table = Texttable()
     table.reset()
+    table.set_max_width(50)
     table.set_chars(list('-|+='))
     table.set_deco(Texttable.BORDER)
     table.set_header_align(list('lll'))
@@ -235,6 +274,7 @@ def test_chaining():
     s1 = table.draw()
     s2 = (Texttable()
           .reset()
+          .set_max_width(50)
           .set_chars(list('-|+='))
           .set_deco(Texttable.BORDER)
           .set_header_align(list('lll'))

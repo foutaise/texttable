@@ -191,9 +191,7 @@ class Texttable:
         - if set to 0, size is unlimited, therefore cells won't be wrapped
         """
 
-        if max_width <= 0:
-            max_width = False
-        self._max_width = max_width
+        self.set_max_width(max_width)
         self._precision = 3
 
         self._deco = Texttable.VLINES | Texttable.HLINES | Texttable.BORDER | \
@@ -211,6 +209,15 @@ class Texttable:
         self._row_size = None
         self._header = []
         self._rows = []
+        return self
+
+    def set_max_width(self, max_width):
+        """Set the maximum width of the table
+
+        - max_width is an integer, specifying the maximum width of the table
+        - if set to 0, size is unlimited, therefore cells won't be wrapped
+        """
+        self._max_width = max_width if max_width > 0 else False
         return self
 
     def set_chars(self, array):
