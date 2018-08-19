@@ -22,9 +22,8 @@ DESCRIPTION = "module for creating simple ASCII tables"
 with open("README.md") as f:
     LONG_DESCRIPTION = f.read()
 
-import sys
+from setuptools import setup
 
-from distutils.core import setup
 setup(
     name = "texttable",
     version = "1.4.0",
