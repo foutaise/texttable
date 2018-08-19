@@ -17,27 +17,27 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
+from setuptools import setup
+
 DESCRIPTION = "module for creating simple ASCII tables"
 
 with open("README.md") as f:
     LONG_DESCRIPTION = f.read()
 
-from setuptools import setup
-
 setup(
-    name = "texttable",
-    version = "1.4.0",
-    author = "Gerome Fournier",
-    author_email = "jef@foutaise.org",
-    url = "https://github.com/foutaise/texttable/",
-    download_url = "https://github.com/foutaise/texttable/archive/v1.4.0.tar.gz",
-    license = "LGPL",
-    py_modules = ["texttable"],
-    description = DESCRIPTION,
-    long_description = LONG_DESCRIPTION,
+    name="texttable",
+    version="1.4.0",
+    author="Gerome Fournier",
+    author_email="jef@foutaise.org",
+    url="https://github.com/foutaise/texttable/",
+    download_url="https://github.com/foutaise/texttable/archive/v1.4.0.tar.gz",
+    license="LGPL",
+    py_modules=["texttable"],
+    description=DESCRIPTION,
+    long_description=LONG_DESCRIPTION,
     long_description_content_type="text/markdown",
-    platforms = "any",
-    classifiers = [
+    platforms="any",
+    classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Console',
         'Intended Audience :: Developers',
