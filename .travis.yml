@@ -1,0 +1,23 @@
+language: python
+cache: pip
+
+matrix:
+  fast_finish: true
+  include:
+    - python: '2.7'
+    - python: '3.5'
+    - python: '3.6'
+    - python: '3.7'
+      dist: xenial
+      sudo: required
+
+install:
+ - pip install -U coverage tox-travis
+
+script:
+ - tox
+
+after_success:
+ - coverage report
+ - pip install -U codecov
+ - codecov

@@ -1,5 +1,7 @@
 # texttable
 
+[![Build Status](https://travis-ci.org/foutaise/texttable.svg?branch=master)](https://travis-ci.org/foutaise/texttable)
+
 Python module for creating simple ASCII tables
 
 ## Availability
