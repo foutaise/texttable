@@ -1,19 +1,5 @@
 # texttable - module for creating simple ASCII tables
-# Copyright (C) 2003-2015 Gerome Fournier <jef(at)foutaise.org>
-#
-# This library is free software; you can redistribute it and/or
-# modify it under the terms of the GNU Lesser General Public
-# License as published by the Free Software Foundation; either
-# version 3.0 of the License, or (at your option) any later version.
-#
-# This library is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-# Lesser General Public License for more details.
-#
-# You should have received a copy of the GNU Lesser General Public
-# License along with this library; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
+# Copyright (C) 2003-2018 Gerome Fournier <jef(at)foutaise.org>
 
 """module for creating simple ASCII tables
 
@@ -75,8 +61,8 @@ from __future__ import division
 __all__ = ["Texttable", "ArraySizeError"]
 
 __author__ = 'Gerome Fournier <jef(at)foutaise.org>'
-__license__ = 'LGPL'
-__version__ = '1.4.0'
+__license__ = 'MIT'
+__version__ = '1.5.0'
 __credits__ = """\
 Jeff Kowalczyk:
     - textwrap improved import

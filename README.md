@@ -187,6 +187,12 @@ CLASSES
      |          * "c": column centered
      |          * "r": column flushed right
      |
+     |  set_max_width(self, max_width)
+     |      Set the maximum width of the table
+     |
+     |      - max_width is an integer, specifying the maximum width of the table
+     |      - if set to 0, size is unlimited, therefore cells won't be wrapped
+     |
      |  set_precision(self, width)
      |      Set the desired precision for float/exponential formats
      |
@@ -209,11 +215,11 @@ DATA
     __all__ = ['Texttable', 'ArraySizeError']
     __author__ = 'Gerome Fournier <jef(at)foutaise.org>'
     __credits__ = 'Jeff Kowalczyk:\n    - textwrap improved import\n ...at...
-    __license__ = 'LGPL'
-    __version__ = '1.4.0'
+    __license__ = 'MIT'
+    __version__ = '1.5.0'
 
 VERSION
-    1.4.0
+    1.5.0
 
 AUTHOR
     Gerome Fournier <jef(at)foutaise.org>
