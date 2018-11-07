@@ -11,6 +11,7 @@ This module is available on [PyPI](https://pypi.org/project/texttable/), and has
 ## Dependencies
 
 If available, [cjkwrap](https://github.com/fgallaire/cjkwrap) library is used instead of textwrap, for a better wrapping of CJK text.
+
 If available, [wcwidth](https://github.com/jquast/wcwidth) library is used for a better rendering (basic emoji support).
 
 ## Documentation
