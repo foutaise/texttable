@@ -110,6 +110,26 @@ except ImportError:
         sys.stderr.write("Can't import textwrap module!\n")
         raise
 
+# define a function to calculate the rendering width of a unicode character
+# - use wcwidth if available
+# - fallback to unicodedata information otherwise
+try:
+    import wcwidth
+    def uchar_width(c):
+        """Return the rendering width of a unicode character
+        """
+        return max(0, wcwidth.wcwidth(c))
+except ImportError:
+    def uchar_width(c):
+        """Return the rendering width of a unicode character
+        """
+        if unicodedata.east_asian_width(c) in 'WF':
+            return 2
+        elif unicodedata.combining(c):
+            return 0
+        else:
+            return 1
+
 from functools import reduce
 
 if sys.version_info >= (3, 0):
@@ -139,9 +159,7 @@ def len(iterable):
     """Redefining len here so it will be able to work with non-ASCII characters
     """
     if isinstance(iterable, bytes_type) or isinstance(iterable, unicode_type):
-        unicode_data = obj2unicode(iterable)
-        w = unicodedata.east_asian_width
-        return sum([w(c) in 'WF' and 2 or (0 if unicodedata.combining(c) else 1) for c in unicode_data])
+        return sum([uchar_width(c) for c in obj2unicode(iterable)])
     else:
         return iterable.__len__()
 
