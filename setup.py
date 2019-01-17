@@ -12,11 +12,11 @@ with open("README.md") as f:
 
 setup(
     name="texttable",
-    version="1.5.0",
+    version="1.6.0",
     author="Gerome Fournier",
     author_email="jef@foutaise.org",
     url="https://github.com/foutaise/texttable/",
-    download_url="https://github.com/foutaise/texttable/archive/v1.5.0.tar.gz",
+    download_url="https://github.com/foutaise/texttable/archive/v1.6.0.tar.gz",
     license="MIT",
     py_modules=["texttable"],
     description=DESCRIPTION,
@@ -39,7 +39,6 @@ setup(
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
