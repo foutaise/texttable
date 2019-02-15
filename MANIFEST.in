@@ -1,1 +1,8 @@
-include README.md
+include *.md
+include *.py
+include *.pyi
+include LICENSE
+include tox.ini
+include .coveragerc
+
+global-exclude *.pyc
