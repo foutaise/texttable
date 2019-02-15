@@ -1,5 +1,5 @@
 # texttable - module for creating simple ASCII tables
-# Copyright (C) 2003-2018 Gerome Fournier <jef(at)foutaise.org>
+# Copyright (C) 2003-2019 Gerome Fournier <jef(at)foutaise.org>
 
 """module for creating simple ASCII tables
 
