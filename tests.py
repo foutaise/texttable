@@ -288,3 +288,18 @@ def test_chaining():
           .add_rows([list('ghi')], False)
           .draw())
     assert s1 == s2
+
+def test_nan():
+    table = Texttable()
+    table.set_cols_align(["l"])
+    table.add_rows([
+        ["A NaN"],
+        ["NaN"],
+    ])
+    assert clean(table.draw()) == u_dedent('''\
+        +-------+
+        | A NaN |
+        +=======+
+        | NaN   |
+        +-------+
+    ''')
