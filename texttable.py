@@ -483,11 +483,12 @@ class Texttable:
         f = cls._to_float(x)
         if abs(f) > 1e8:
             fn = cls._fmt_exp
+        elif f != f:  # NaN
+            fn = cls._fmt_text
+        elif f - round(f) == 0:
+            fn = cls._fmt_int
         else:
-            if f - round(f) == 0:
-                fn = cls._fmt_int
-            else:
-                fn = cls._fmt_float
+            fn = cls._fmt_float
         return fn(x, **kw)
 
     def _str(self, i, x):
