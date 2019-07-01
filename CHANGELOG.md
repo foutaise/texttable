@@ -1,5 +1,8 @@
 # Version History
 
+v1.6.2 (2019-07-01)
+* Fix auto-formatting NaN (https://github.com/foutaise/texttable/pull/60)
+
 v1.6.1 (2019-02-15)
 * Include tests, license in source tarball (https://github.com/foutaise/texttable/issues/58)
 * Add changelog
