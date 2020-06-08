@@ -92,6 +92,7 @@ frinkelpi:
 
 import sys
 import unicodedata
+import texttable_latex
 
 # define a text wrapping function to wrap some text
 # to a specific width:
@@ -431,6 +432,18 @@ class Texttable:
             out += self._hline()
         return out[:-1]
 
+    def draw_latex(self, caption=None, label=None, drop_columns=None):
+        """Draw the table in Latex format
+
+        - The 'caption' argument is a string that adds a caption to the Latex formatting.
+        - The 'label' argument is a string that adds a referencing label to the Latex formatting.
+        - The 'drop_columns' argument is an array of column names that won't be in the Latex output.
+          Each column name must be in the table header.
+
+        - The formatted table is returned as a whole string
+        """
+        return texttable_latex.draw(self, caption, label, drop_columns)
+
     @classmethod
     def _to_float(cls, x):
         if x is None:
@@ -724,6 +737,7 @@ if __name__ == '__main__':
                     ["Mr\nBaptiste\nClement", 1, "Baby"],
                     ["Mme\nLouise\nBourgeau", 28, "Lou\n \nLoue"]])
     print(table.draw() + "\n")
+    print(table.draw_latex(caption="An example table.", label="table:example_table") + "\n")
 
     table = Texttable()
     table.set_deco(Texttable.HEADER)
@@ -738,4 +752,6 @@ if __name__ == '__main__':
                     ["efghijk", 67.5434, .654,  89.6,  12800000000000000000000.00023],
                     ["lmn",     5e-78,   5e-78, 89.4,  .000000000000128],
                     ["opqrstu", .023,    5e+78, 92.,   12800000000000000000000]])
-    print(table.draw())
+    print(table.draw() + "\n")
+    print(table.draw_latex(caption="Another table.", label="table:another_table") + "\n")
+    print(table.draw_latex(caption="A table with dropped columns.", label="table:dropped_column_table", drop_columns=['exp', 'int']))
