@@ -252,3 +252,7 @@ CREDITS
     frinkelpi:
         - preserve empty lines
 ```
+
+## Forks
+
+* [latextable](https://github.com/JAEarly/latextable) is a fork of texttable that provide a LaTeX backend.
