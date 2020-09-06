@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # texttable - module for creating simple ASCII tables
-# Copyright (C) 2003-2019 Gerome Fournier <jef(at)foutaise.org>
+# Copyright (C) 2003-2020 Gerome Fournier <jef(at)foutaise.org>
 
 from setuptools import setup
 
