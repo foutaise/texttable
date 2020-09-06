@@ -1,5 +1,8 @@
 # Version History
 
+v1.6.3 (2020-09-06)
+* Improve int conversion (https://github.com/foutaise/texttable/issues/70)
+
 v1.6.2 (2019-07-01)
 * Fix auto-formatting NaN (https://github.com/foutaise/texttable/pull/60)
 
