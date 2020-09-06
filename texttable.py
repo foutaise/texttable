@@ -1,5 +1,5 @@
 # texttable - module for creating simple ASCII tables
-# Copyright (C) 2003-2019 Gerome Fournier <jef(at)foutaise.org>
+# Copyright (C) 2003-2020 Gerome Fournier <jef(at)foutaise.org>
 
 """module for creating simple ASCII tables
 
@@ -62,7 +62,7 @@ __all__ = ["Texttable", "ArraySizeError"]
 
 __author__ = 'Gerome Fournier <jef(at)foutaise.org>'
 __license__ = 'MIT'
-__version__ = '1.6.2'
+__version__ = '1.6.3'
 __credits__ = """\
 Jeff Kowalczyk:
     - textwrap improved import
@@ -443,10 +443,11 @@ class Texttable:
     @classmethod
     def _fmt_int(cls, x, **kw):
         """Integer formatting class-method.
-
-        - x will be float-converted and then used.
         """
-        return str(int(round(cls._to_float(x))))
+        if type(x) == int:
+            return str(x)
+        else:
+            return str(int(round(cls._to_float(x))))
 
     @classmethod
     def _fmt_float(cls, x, **kw):
