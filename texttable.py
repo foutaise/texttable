@@ -31,6 +31,16 @@ Example:
                     ["opqrstu", .023,    5e+78, 92.,   12800000000000000000000]])
     print(table.draw())
 
+    # ANSI Color Table
+    from colorama import Fore, Back, Style, init
+    table = Texttable()
+    table.set_chars(['-', '|', '+', '-'])
+    table.add_rows([["Name", "Age", "Nickname"],
+                    ["Neo", 35, Fore.RED+"netkiller"+Fore.RESET],
+                    ["李磊", 23, Fore.GREEN+"Lee"+Fore.RESET],
+                    ["韩美美", 28, Fore.BLUE+"May"+Fore.RESET]])
+    print(table.draw())    
+
 Result:
 
     +----------+-----+----------+
@@ -54,7 +64,7 @@ Result:
     abcd   67.000   6.540e+02   89    128.001
     efgh   67.543   6.540e-01   90    1.280e+22
     ijkl   0.000    5.000e-78   89    0.000
-    mnop   0.023    5.000e+78   92    1.280e+22
+    mnop   0.023    5.000e+78   92    1.280e+22  
 """
 
 from __future__ import division
@@ -63,7 +73,7 @@ __all__ = ["Texttable", "ArraySizeError"]
 
 __author__ = 'Gerome Fournier <jef(at)foutaise.org>'
 __license__ = 'MIT'
-__version__ = '1.6.3'
+__version__ = '1.6.4'
 __credits__ = """\
 Jeff Kowalczyk:
     - textwrap improved import
@@ -89,9 +99,14 @@ Maximilian Hils:
 
 frinkelpi:
     - preserve empty lines
+
+Neo (netkiller):
+    - add function escape_ansi()
+    - add new feature, ansi color text for table
 """
 
 import sys
+import re
 import unicodedata
 
 # define a text wrapping function to wrap some text
@@ -100,11 +115,13 @@ import unicodedata
 # - fallback to textwrap otherwise
 try:
     import cjkwrap
+
     def textwrapper(txt, width):
         return cjkwrap.wrap(txt, width)
 except ImportError:
     try:
         import textwrap
+
         def textwrapper(txt, width):
             return textwrap.wrap(txt, width)
     except ImportError:
@@ -116,6 +133,7 @@ except ImportError:
 # - fallback to unicodedata information otherwise
 try:
     import wcwidth
+
     def uchar_width(c):
         """Return the rendering width of a unicode character
         """
@@ -141,6 +159,11 @@ else:
     bytes_type = str
 
 
+def escape_ansi(line):
+    ansi_escape = re.compile(r'(?:\x1B[@-_]|[\x80-\x9F])[0-?]*[ -/]*[@-~]')
+    return ansi_escape.sub('', line)
+
+
 def obj2unicode(obj):
     """Return a unicode representation of a python object
     """
@@ -150,7 +173,8 @@ def obj2unicode(obj):
         try:
             return unicode_type(obj, 'utf-8')
         except UnicodeDecodeError as strerror:
-            sys.stderr.write("UnicodeDecodeError exception for string '%s': %s\n" % (obj, strerror))
+            sys.stderr.write(
+                "UnicodeDecodeError exception for string '%s': %s\n" % (obj, strerror))
             return unicode_type(obj, 'utf-8', 'replace')
     else:
         return unicode_type(obj)
@@ -160,6 +184,7 @@ def len(iterable):
     """Redefining len here so it will be able to work with non-ASCII characters
     """
     if isinstance(iterable, bytes_type) or isinstance(iterable, unicode_type):
+        iterable = escape_ansi(iterable)
         return sum([uchar_width(c) for c in obj2unicode(iterable)])
     else:
         return iterable.__len__()
@@ -239,7 +264,7 @@ class Texttable:
 
         if len(array) != 4:
             raise ArraySizeError("array should contain 4 characters")
-        array = [ x[:1] for x in [ str(s) for s in array ] ]
+        array = [x[:1] for x in [str(s) for s in array]]
         (self._char_horiz, self._char_vert,
             self._char_corner, self._char_header) = array
         return self
@@ -500,12 +525,12 @@ class Texttable:
             x - cell data to format
         """
         FMT = {
-            'a':self._fmt_auto,
-            'i':self._fmt_int,
-            'f':self._fmt_float,
-            'e':self._fmt_exp,
-            't':self._fmt_text,
-            }
+            'a': self._fmt_auto,
+            'i': self._fmt_int,
+            'f': self._fmt_float,
+            'e': self._fmt_exp,
+            't': self._fmt_text,
+        }
 
         n = self._precision
         dtype = self._dtype[i]
@@ -524,8 +549,8 @@ class Texttable:
         if not self._row_size:
             self._row_size = len(array)
         elif self._row_size != len(array):
-            raise ArraySizeError("array should contain %d elements" \
-                % self._row_size)
+            raise ArraySizeError("array should contain %d elements"
+                                 % self._row_size)
 
     def _has_vlines(self):
         """Return a boolean, if vlines are required or not
@@ -574,13 +599,13 @@ class Texttable:
             horiz = self._char_header
         # compute cell separator
         s = "%s%s%s" % (horiz, [horiz, self._char_corner][self._has_vlines()],
-            horiz)
+                        horiz)
         # build the line
         l = s.join([horiz * n for n in self._width])
         # add border if needed
         if self._has_border():
             l = "%s%s%s%s%s\n" % (self._char_corner, horiz, l, horiz,
-                self._char_corner)
+                                  self._char_corner)
         else:
             l += "\n"
         return l
@@ -616,9 +641,9 @@ class Texttable:
             return
         maxi = []
         if self._header:
-            maxi = [ self._len_cell(x) for x in self._header ]
+            maxi = [self._len_cell(x) for x in self._header]
         for row in self._rows:
-            for cell,i in zip(row, list(range(len(row)))):
+            for cell, i in zip(row, list(range(len(row)))):
                 try:
                     maxi[i] = max(maxi[i], self._len_cell(cell))
                 except (TypeError, IndexError):
@@ -626,7 +651,7 @@ class Texttable:
 
         ncols = len(maxi)
         content_width = sum(maxi)
-        deco_width = 3*(ncols-1) + [0,4][self._has_border()]
+        deco_width = 3*(ncols-1) + [0, 4][self._has_border()]
         if self._max_width and (content_width + deco_width) > self._max_width:
             """ content too wide to fit the expected max_width
             let's recompute maximum cell width for each cell
@@ -677,12 +702,13 @@ class Texttable:
                 if align == "r":
                     out += fill * space + cell_line
                 elif align == "c":
-                    out += (int(fill/2) * space + cell_line \
-                            + int(fill/2 + fill%2) * space)
+                    out += (int(fill/2) * space + cell_line
+                            + int(fill/2 + fill % 2) * space)
                 else:
                     out += cell_line + fill * space
                 if length < len(line):
-                    out += " %s " % [space, self._char_vert][self._has_vlines()]
+                    out += " %s " % [space,
+                                     self._char_vert][self._has_vlines()]
             out += "%s\n" % ['', space + self._char_vert][self._has_border()]
         return out
 
@@ -700,9 +726,13 @@ class Texttable:
                 if c.strip() == "":
                     array.append("")
                 else:
-                    array.extend(textwrapper(c, width))
+                    if len(cell) <= width:
+                        array.append(c)
+                    else:
+                        array.extend(textwrapper(c, width))
             line_wrapped.append(array)
         max_cell_lines = reduce(max, list(map(len, line_wrapped)))
+
         for cell, valign in zip(line_wrapped, self._valign):
             if isheader:
                 valign = "t"
@@ -714,10 +744,12 @@ class Texttable:
                 cell[:0] = [""] * (max_cell_lines - len(cell))
             else:
                 cell.extend([""] * (max_cell_lines - len(cell)))
+        # print(">"+str(line_wrapped))
         return line_wrapped
 
 
 if __name__ == '__main__':
+
     table = Texttable()
     table.set_cols_align(["l", "r", "c"])
     table.set_cols_valign(["t", "m", "b"])
@@ -734,11 +766,23 @@ if __name__ == '__main__':
                           'f',  # float (decimal)
                           'e',  # float (exponent)
                           'i',  # integer
-                          'a']) # automatic
+                          'a'])  # automatic
     table.set_cols_align(["l", "r", "r", "r", "l"])
     table.add_rows([["text",    "float", "exp", "int", "auto"],
                     ["abcd",    "67",    654,   89,    128.001],
-                    ["efghijk", 67.5434, .654,  89.6,  12800000000000000000000.00023],
+                    ["efghijk", 67.5434, .654,  89.6,
+                        12800000000000000000000.00023],
                     ["lmn",     5e-78,   5e-78, 89.4,  .000000000000128],
                     ["opqrstu", .023,    5e+78, 92.,   12800000000000000000000]])
+    print(table.draw())
+    print()
+
+    from colorama import Fore, Back, Style, init
+    table = Texttable()
+    table.set_chars(['-', '|', '+', '-'])
+    # table.set_cols_width([8, 5, 19])
+    table.add_rows([["Name", "Age", "Nickname"],
+                    ["Neo", 35, Fore.RED+"netkiller"+Fore.RESET],
+                    ["李磊", 23, Fore.GREEN+"Lee"+Fore.RESET],
+                    ["韩美美", 28, Fore.BLUE+"May"+Fore.RESET]])
     print(table.draw())
