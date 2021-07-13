@@ -63,7 +63,7 @@ __all__ = ["Texttable", "ArraySizeError"]
 
 __author__ = 'Gerome Fournier <jef(at)foutaise.org>'
 __license__ = 'MIT'
-__version__ = '1.6.3'
+__version__ = '1.6.4'
 __credits__ = """\
 Jeff Kowalczyk:
     - textwrap improved import
@@ -262,6 +262,7 @@ class Texttable:
         """
 
         self._deco = deco
+        self._hline_string = None
         return self
 
     def set_header_align(self, array):

@@ -1,12 +1,12 @@
 Metadata-Version: 1.0
 Name: texttable
-Version: 1.6.3
+Version: 1.6.4
 Summary: module for creating simple ASCII tables
 Home-page: https://github.com/foutaise/texttable/
 Author: Gerome Fournier
 Author-email: jef@foutaise.org
 License: MIT
-Download-URL: https://github.com/foutaise/texttable/archive/v1.6.3.tar.gz
+Download-URL: https://github.com/foutaise/texttable/archive/v1.6.4.tar.gz
 Description: texttable is a module to generate a formatted text table, using ASCII
         characters.
 Platform: any

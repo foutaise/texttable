@@ -1,5 +1,8 @@
 # Version History
 
+v1.6.4 (2021-07-13)
+* Fix alignment bug when deco is modified (https://github.com/foutaise/texttable/issues/76)
+
 v1.6.3 (2020-09-06)
 * Improve int conversion (https://github.com/foutaise/texttable/issues/70)
 
