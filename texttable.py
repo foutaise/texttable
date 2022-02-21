@@ -91,8 +91,25 @@ frinkelpi:
     - preserve empty lines
 """
 
+import re
 import sys
 import unicodedata
+
+EXPERIMENTAL_COLOR = False
+
+def set_experimental_color(enabled):
+    global EXPERIMENTAL_COLOR
+    global textwrapper
+
+    EXPERIMENTAL_COLOR = enabled
+    if not enabled:
+        return
+    try:
+        import ansiwrap
+        textwrapper = ansiwrap.wrap
+    except ImportError:
+        sys.stderr.write("Experimental color feature enabled but ansiwrap package not installed!\n")
+        raise
 
 # define a text wrapping function to wrap some text
 # to a specific width:
@@ -160,6 +177,9 @@ def len(iterable):
     """Redefining len here so it will be able to work with non-ASCII characters
     """
     if isinstance(iterable, bytes_type) or isinstance(iterable, unicode_type):
+        if EXPERIMENTAL_COLOR and isinstance(iterable, unicode_type):
+            ansi_escape = re.compile(r'(?:\x1B[@-_]|[\x80-\x9F])[0-?]*[ -/]*[@-~]')
+            iterable = ansi_escape.sub('', iterable)
         return sum([uchar_width(c) for c in obj2unicode(iterable)])
     else:
         return iterable.__len__()
