@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 #
-# texttable - module for creating simple ASCII tables
+# texttable - module to create simple ASCII tables
 # Copyright (C) 2003-2020 Gerome Fournier <jef(at)foutaise.org>
 
 from setuptools import setup
 
-DESCRIPTION = "module for creating simple ASCII tables"
+DESCRIPTION = "module to create simple ASCII tables"
 
 with open("README.md") as f:
     LONG_DESCRIPTION = f.read()

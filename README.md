@@ -1,6 +1,6 @@
 # texttable
 
-Python module for creating simple ASCII tables
+Python module to create simple ASCII tables
 
 ## Availability
 
@@ -18,7 +18,7 @@ If available, [wcwidth](https://github.com/jquast/wcwidth) library is used for a
 
 ```
 NAME
-    texttable - module for creating simple ASCII tables
+    texttable - module to create simple ASCII tables
 
 FILE
     /usr/local/lib/python2.7/dist-packages/texttable.py
