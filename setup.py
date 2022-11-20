@@ -4,6 +4,7 @@
 # Copyright (C) 2003-2020 Gerome Fournier <jef(at)foutaise.org>
 
 from setuptools import setup
+import sys
 
 DESCRIPTION = "module to create simple ASCII tables"
 
@@ -12,13 +13,14 @@ with open("README.md") as f:
 
 setup(
     name="texttable",
-    version="1.6.4",
+    version="1.6.5",
     author="Gerome Fournier",
     author_email="jef@foutaise.org",
     url="https://github.com/foutaise/texttable/",
     download_url="https://github.com/foutaise/texttable/archive/v1.6.4.tar.gz",
     license="MIT",
     py_modules=["texttable"],
+    data_files=[('./lib/python{}.{}/site-packages'.format(*sys.version_info[:2]), ['texttable.pyi'])],
     description=DESCRIPTION,
     long_description=LONG_DESCRIPTION,
     long_description_content_type="text/markdown",

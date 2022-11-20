@@ -1,5 +1,8 @@
 # Version History
 
+v1.6.5 (2021-07-13)
+* Modify setup.py to include missing stub file in wheel package (https://github.com/foutaise/texttable/issues/82)
+
 v1.6.4 (2021-07-13)
 * Fix alignment bug when deco is modified (https://github.com/foutaise/texttable/issues/76)
 
