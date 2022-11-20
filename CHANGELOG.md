@@ -1,6 +1,6 @@
 # Version History
 
-v1.6.5 (2021-07-13)
+v1.6.5 (2022-11-20)
 * Modify setup.py to include missing stub file in wheel package (https://github.com/foutaise/texttable/issues/82)
 
 v1.6.4 (2021-07-13)
