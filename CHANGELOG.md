@@ -1,5 +1,8 @@
 # Version History
 
+v1.6.7 (2022-11-23)
+* Get rid of stub file in wheel package (https://github.com/foutaise/texttable/issues/84)
+
 v1.6.6 (2022-11-22)
 * Fix regression introduced in 1.6.5 release (https://github.com/foutaise/texttable/issues/83)
 
