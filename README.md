@@ -108,6 +108,9 @@ CLASSES
      |  header(self, array)
      |      Specify the header of the table
      |
+     |  keys(self, array)
+     |      Specify the keys of the data objects
+     |
      |  reset(self)
      |      Reset the instance
      |
