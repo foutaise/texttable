@@ -63,7 +63,7 @@ __all__ = ["Texttable", "ArraySizeError"]
 
 __author__ = 'Gerome Fournier <jef(at)foutaise.org>'
 __license__ = 'MIT'
-__version__ = '1.6.7'
+__version__ = '1.6.8'
 __credits__ = """\
 Jeff Kowalczyk:
     - textwrap improved import
@@ -89,6 +89,9 @@ Maximilian Hils:
 
 frinkelpi:
     - preserve empty lines
+    
+LordJakson:
+    - added support for dict and class data
 """
 
 import sys
@@ -214,6 +217,7 @@ class Texttable:
         self._row_size = None
         self._header = []
         self._rows = []
+        self._keys = []
         return self
 
     def set_max_width(self, max_width):
@@ -367,6 +371,14 @@ class Texttable:
         self._check_row_size(array)
         self._header = list(map(obj2unicode, array))
         return self
+ 
+    def keys(self, array):
+        """Specify the keys of the data items
+        """
+
+        self._check_row_size(array)
+        self._keys = array
+        return self
 
     def add_row(self, array):
         """Add a row in the rows stack
@@ -374,6 +386,8 @@ class Texttable:
         - cells can contain newlines and tabs
         """
 
+        array = self._convert_to_array(array)
+        
         self._check_row_size(array)
 
         if not hasattr(self, "_dtype"):
@@ -396,7 +410,7 @@ class Texttable:
 
         # nb: don't use 'iter' on by-dimensional arrays, to get a
         #     usable code for python 2.1
-        if header:
+        if header and not self._keys:
             if hasattr(rows, '__iter__') and hasattr(rows, 'next'):
                 self.header(rows.next())
             else:
@@ -493,6 +507,38 @@ class Texttable:
         else:
             fn = cls._fmt_float
         return fn(x, **kw)
+
+    def _convert_to_array(self, data):
+        if isinstance(data, list):
+            return data
+        elif isinstance(data, dict):
+            result = []
+            for key in self._keys:
+                value = ""
+                if isinstance(data, list):
+                    for sub_key in key:
+                        if value:
+                            value += " "
+                        value += data[sub_key]
+                    pass
+                else:
+                    value = data[key]
+                result.append(value)
+            return result
+        else:  # class obj
+            result = []
+            for key in self._keys:
+                value = ""
+                if isinstance(key, list):
+                    for sub_key in key:
+                        if value:
+                            value += " "
+                        value += getattr(data, sub_key)
+                    pass
+                else:
+                    value = getattr(data, key)
+                result.append(value)
+            return result
 
     def _str(self, i, x):
         """Handles string formatting of cell data
