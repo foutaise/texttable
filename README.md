@@ -114,7 +114,7 @@ CLASSES
      |  reset(self)
      |      Reset the instance
      |
-     |      - reset rows and header
+     |      - reset rows, header and keys
      |
      |  set_chars(self, array)
      |      Set the characters used to draw lines between rows and columns
