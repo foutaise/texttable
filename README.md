@@ -225,7 +225,7 @@ DATA
     __version__ = '1.6.7'
 
 VERSION
-    1.6.7
+    1.6.8
 
 AUTHOR
     Gerome Fournier <jef(at)foutaise.org>
@@ -255,6 +255,9 @@ CREDITS
 
     frinkelpi:
         - preserve empty lines
+
+    LordJakson:
+        - added support for dict and class data    
 ```
 
 ## Forks
