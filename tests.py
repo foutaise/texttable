@@ -303,3 +303,44 @@ def test_nan():
         | NaN   |
         +-------+
     ''')
+
+def test_key_dict():
+    table = Texttable()
+    table.header(["col1", "col2"])
+    table.keys(["key1", "key2"])
+    table.add_rows([
+            dict(key1="Text1.1", key2="Text1.2"),
+            dict(key1="Text2.1", key2="Text2.2"),
+            ])
+    assert clean(table.draw()) == u_dedent('''\
+        +---------+---------+
+        |  col1   |  col2   |
+        +=========+=========+
+        | Text1.1 | Text1.2 |
+        +---------+---------+
+        | Text2.1 | Text2.2 |
+        +---------+---------+
+        ''')
+
+def test_key_class():
+    class Item:
+        def __init__(self, key1, key2):
+            self.key1 = key1
+            self.key2 = key2
+
+    table = Texttable()
+    table.header(["col1", "col2"])
+    table.keys(["key1", "key2"])
+    table.add_rows([
+            Item("Text1.1", "Text1.2"),
+            Item("Text2.1", "Text2.2"),
+            ])
+    assert clean(table.draw()) == u_dedent('''\
+        +---------+---------+
+        |  col1   |  col2   |
+        +=========+=========+
+        | Text1.1 | Text1.2 |
+        +---------+---------+
+        | Text2.1 | Text2.2 |
+        +---------+---------+
+        ''')
