@@ -57,9 +57,10 @@ def test_texttable_header():
     table.add_rows([
         ["text",    "float", "exp", "int", "bool", "auto"],
         ["abcd",    "67",    654,   89,    True,   128.001],
-        ["efghijk", 67.5434, .654,  89.6,  True,   12800000000000000000000.00023],
+        ["efghijk", 67.5434, .654,  89.6,  42,     12800000000000000000000.00023],
         ["lmn",     5e-78,   5e-78, 89.4,  False,  .000000000000128],
-        ["opqrstu", .023,    5e+78, 92.,   False,  12800000000000000000000],
+        ["opqrstu", .023,    5e+78, 92.,   0,      12800000000000000000000],
+        ["abcdef",  .023,    5e+78, 92.,   0,      False],
     ])
     assert clean(table.draw()) == dedent('''\
          text     float       exp      int   bool      auto
@@ -68,6 +69,7 @@ def test_texttable_header():
         efghijk   67.543   6.540e-01    90   True    1.280e+22
         lmn        0.000   5.000e-78    89   False   0.000
         opqrstu    0.023   5.000e+78    92   False   1.280e+22
+        abcdef     0.023   5.000e+78    92   False   False
     ''')
 
 def test_set_cols_width():
