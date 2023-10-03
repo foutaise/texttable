@@ -144,6 +144,7 @@ CLASSES
      |          * "f": treat as float in decimal format
      |          * "e": treat as float in exponential format
      |          * "i": treat as int
+     |          * "b": treat as boolean
      |          * a callable: should return formatted string for any value given
      |
      |      - by default, automatic datatyping is used for each column
