@@ -303,3 +303,25 @@ def test_nan():
         | NaN   |
         +-------+
     ''')
+
+def test_bool():
+    table = Texttable()
+    table.set_cols_align(["l", "l"])
+    table.set_cols_dtype(["a", "b"])
+    table.set_deco(0)
+    table.add_rows([
+        [True,   True],
+        [False,  False],
+        ["test", 0],
+        [12,     "true"],
+        [12,     ""],
+        [34.2,   1.0],
+    ], header=False)
+    assert clean(table.draw()) == u_dedent('''\
+        True     True
+        False    False
+        test     False
+        12       True
+        12       False
+        34.200   True
+    ''')

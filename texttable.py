@@ -311,13 +311,14 @@ class Texttable:
         """Set the desired columns datatype for the cols.
 
         - the elements of the array should be either a callable or any of
-          "a", "t", "f", "e" or "i":
+          "a", "t", "f", "e", "i" or "b":
 
             * "a": automatic (try to use the most appropriate datatype)
             * "t": treat as text
             * "f": treat as float in decimal format
             * "e": treat as float in exponential format
             * "i": treat as int
+            * "b": treat as boolean
             * a callable: should return formatted string for any value given
 
         - by default, automatic datatyping is used for each column
@@ -481,6 +482,11 @@ class Texttable:
         return obj2unicode(x)
 
     @classmethod
+    def _fmt_bool(cls, x, **kw):
+        """Boolean formatting class-method"""
+        return str(bool(x))
+
+    @classmethod
     def _fmt_auto(cls, x, **kw):
         """auto formatting class-method."""
         f = cls._to_float(x)
@@ -489,7 +495,7 @@ class Texttable:
         elif f != f:  # NaN
             fn = cls._fmt_text
         elif f - round(f) == 0:
-            fn = cls._fmt_int
+            fn = cls._fmt_bool if isinstance(x, bool) else cls._fmt_int
         else:
             fn = cls._fmt_float
         return fn(x, **kw)
@@ -503,6 +509,7 @@ class Texttable:
         FMT = {
             'a':self._fmt_auto,
             'i':self._fmt_int,
+            'b':self._fmt_bool,
             'f':self._fmt_float,
             'e':self._fmt_exp,
             't':self._fmt_text,
