@@ -484,7 +484,7 @@ class Texttable:
     @classmethod
     def _fmt_bool(cls, x, **kw):
         """Boolean formatting class-method"""
-        return str(x)
+        return str(bool(x))
 
     @classmethod
     def _fmt_auto(cls, x, **kw):
