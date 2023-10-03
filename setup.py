@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # texttable - module to create simple ASCII tables
-# Copyright (C) 2003-2022 Gerome Fournier <jef(at)foutaise.org>
+# Copyright (C) 2003-2023 Gerome Fournier <jef(at)foutaise.org>
 
 from setuptools import setup
 
@@ -12,11 +12,11 @@ with open("README.md") as f:
 
 setup(
     name="texttable",
-    version="1.6.7",
+    version="1.7.0",
     author="Gerome Fournier",
     author_email="jef@foutaise.org",
     url="https://github.com/foutaise/texttable/",
-    download_url="https://github.com/foutaise/texttable/archive/v1.6.7.tar.gz",
+    download_url="https://github.com/foutaise/texttable/archive/v1.7.0.tar.gz",
     license="MIT",
     py_modules=["texttable"],
     description=DESCRIPTION,

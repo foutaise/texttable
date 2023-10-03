@@ -220,10 +220,10 @@ DATA
     __author__ = 'Gerome Fournier <jef(at)foutaise.org>'
     __credits__ = 'Jeff Kowalczyk:\n    - textwrap improved import\n ...at...
     __license__ = 'MIT'
-    __version__ = '1.6.7'
+    __version__ = '1.7.0'
 
 VERSION
-    1.6.7
+    1.7.0
 
 AUTHOR
     Gerome Fournier <jef(at)foutaise.org>

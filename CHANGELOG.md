@@ -1,5 +1,8 @@
 # Version History
 
+v1.7.0 (2023-10-03)
+* Add boolean formatting option (https://github.com/foutaise/texttable/pull/89)
+
 v1.6.7 (2022-11-23)
 * Get rid of stub file in wheel package (https://github.com/foutaise/texttable/issues/84)
 
