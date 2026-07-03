@@ -222,6 +222,8 @@ class Texttable:
         - max_width is an integer, specifying the maximum width of the table
         - if set to 0, size is unlimited, therefore cells won't be wrapped
         """
+        if not isinstance(max_width, int) or isinstance(max_width, bool):
+            raise ValueError('max_width must be a non-negative integer')
         self._max_width = max_width if max_width > 0 else False
         return self
 
