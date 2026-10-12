@@ -398,7 +398,9 @@ class Texttable:
         # nb: don't use 'iter' on by-dimensional arrays, to get a
         #     usable code for python 2.1
         if header:
-            if hasattr(rows, '__iter__') and hasattr(rows, 'next'):
+            if hasattr(rows, '__next__'):
+                self.header(next(rows))
+            elif hasattr(rows, '__iter__') and hasattr(rows, 'next'):
                 self.header(rows.next())
             else:
                 self.header(rows[0])
