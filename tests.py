@@ -29,6 +29,23 @@ def test_add_rows_iterator(iterator, header):
 def test_add_rows_header_only_iterator():
     rows = [["Name", "Age"]]
     assert Texttable().add_rows(iter(rows)).draw() == Texttable().add_rows(rows).draw()
+def test_change_chars_after_draw():
+    rows = [["Header"], ["first"], ["second"]]
+    table = Texttable().add_rows(rows)
+    table.draw()
+    chars = ['~', '!', '*', '=']
+    table.set_chars(chars)
+    assert table.draw() == Texttable().set_chars(chars).add_rows(rows).draw()
+
+
+def test_change_width_after_draw():
+    rows = [["Header"], ["first row"], ["second row"]]
+    table = Texttable().set_cols_width([12]).add_rows(rows)
+    table.draw()
+    for width in [5, 16]:
+        table.set_cols_width([width])
+        expected = Texttable().set_cols_width([width]).add_rows(rows).draw()
+        assert table.draw() == expected
 
 def test_texttable():
     table = Texttable()

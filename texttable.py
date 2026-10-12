@@ -242,6 +242,7 @@ class Texttable:
         array = [ x[:1] for x in [ str(s) for s in array ] ]
         (self._char_horiz, self._char_vert,
             self._char_corner, self._char_header) = array
+        self._hline_string = None
         return self
 
     def set_deco(self, deco):
@@ -346,6 +347,7 @@ class Texttable:
             sys.stderr.write("Wrong argument in column width specification\n")
             raise
         self._width = array
+        self._hline_string = None
         return self
 
     def set_precision(self, width):
