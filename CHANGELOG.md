@@ -1,5 +1,9 @@
 # Version History
 
+v1.7.1 (2026-10-12)
+* Consume Python 3 row iterators when reading table headers (https://github.com/foutaise/texttable/pull/92)
+* Invalidate horizontal lines when characters or widths change (https://github.com/foutaise/texttable/pull/93)
+
 v1.7.0 (2023-10-03)
 * Add boolean formatting option (https://github.com/foutaise/texttable/pull/89)
 

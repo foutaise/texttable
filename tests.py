@@ -15,7 +15,6 @@ else:
 def clean(text):
     return re.sub(r'( +)$', '', text, flags=re.MULTILINE) + '\n'
 
-
 @pytest.mark.parametrize('iterator', [iter, lambda rows: (row for row in rows)])
 @pytest.mark.parametrize('header', [True, False])
 def test_add_rows_iterator(iterator, header):
@@ -25,10 +24,10 @@ def test_add_rows_iterator(iterator, header):
     assert table.add_rows(iterator(rows), header=header) is table
     assert table.draw() == expected
 
-
 def test_add_rows_header_only_iterator():
     rows = [["Name", "Age"]]
     assert Texttable().add_rows(iter(rows)).draw() == Texttable().add_rows(rows).draw()
+
 def test_change_chars_after_draw():
     rows = [["Header"], ["first"], ["second"]]
     table = Texttable().add_rows(rows)
@@ -36,7 +35,6 @@ def test_change_chars_after_draw():
     chars = ['~', '!', '*', '=']
     table.set_chars(chars)
     assert table.draw() == Texttable().set_chars(chars).add_rows(rows).draw()
-
 
 def test_change_width_after_draw():
     rows = [["Header"], ["first row"], ["second row"]]
