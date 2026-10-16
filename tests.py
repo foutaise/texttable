@@ -45,6 +45,38 @@ def test_change_width_after_draw():
         expected = Texttable().set_cols_width([width]).add_rows(rows).draw()
         assert table.draw() == expected
 
+def test_add_row_after_draw():
+    rows = [["Name"], ["a"]]
+    table = Texttable(max_width=0).add_rows(rows)
+    table.draw()
+    table.add_row(["a longer value"])
+    expected = Texttable(max_width=0).add_rows(rows + [["a longer value"]])
+    assert table.draw() == expected.draw()
+
+def test_change_header_after_draw():
+    table = Texttable().add_rows([["Name"], ["a"]])
+    table.draw()
+    table.header(["A longer header"])
+    assert table.draw() == Texttable().add_rows([["A longer header"], ["a"]]).draw()
+
+@pytest.mark.parametrize('widths', [(0, 12), (12, 0)])
+def test_change_max_width_after_draw(widths):
+    rows = [["Name"], ["a much longer value"]]
+    table = Texttable(max_width=widths[0]).add_rows(rows)
+    table.draw()
+    table.set_max_width(widths[1])
+    assert table.draw() == Texttable(max_width=widths[1]).add_rows(rows).draw()
+
+def test_explicit_width_after_draw():
+    rows = [["Name"], ["a"]]
+    table = Texttable().set_cols_width([5]).add_rows(rows)
+    table.draw()
+    table.add_row(["a longer value"])
+    table.set_max_width(0)
+    expected = Texttable(max_width=0).set_cols_width([5])
+    expected.add_rows(rows + [["a longer value"]])
+    assert table.draw() == expected.draw()
+
 def test_texttable():
     table = Texttable()
     table.set_cols_align(["l", "r", "c"])

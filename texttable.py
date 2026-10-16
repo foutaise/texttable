@@ -197,6 +197,7 @@ class Texttable:
         """
 
         self.set_max_width(max_width)
+        self._width_is_explicit = False
         self._precision = 3
 
         self._deco = Texttable.VLINES | Texttable.HLINES | Texttable.BORDER | \
@@ -347,6 +348,7 @@ class Texttable:
             sys.stderr.write("Wrong argument in column width specification\n")
             raise
         self._width = array
+        self._width_is_explicit = True
         self._hline_string = None
         return self
 
@@ -624,7 +626,7 @@ class Texttable:
         computed to fit, and cells will be wrapped.
         """
 
-        if hasattr(self, "_width"):
+        if self._width_is_explicit:
             return
         maxi = []
         if self._header:
@@ -655,6 +657,7 @@ class Texttable:
                 i = (i + 1) % ncols
             maxi = newmaxi
         self._width = maxi
+        self._hline_string = None
 
     def _check_align(self):
         """Check if alignment has been specified, set default one if not
