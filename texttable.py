@@ -210,7 +210,6 @@ class Texttable:
         - reset rows and header
         """
 
-        self._hline_string = None
         self._row_size = None
         self._header = []
         self._rows = []
@@ -242,7 +241,6 @@ class Texttable:
         array = [ x[:1] for x in [ str(s) for s in array ] ]
         (self._char_horiz, self._char_vert,
             self._char_corner, self._char_header) = array
-        self._hline_string = None
         return self
 
     def set_deco(self, deco):
@@ -263,7 +261,6 @@ class Texttable:
         """
 
         self._deco = deco
-        self._hline_string = None
         return self
 
     def set_header_align(self, array):
@@ -346,8 +343,7 @@ class Texttable:
         except ValueError:
             sys.stderr.write("Wrong argument in column width specification\n")
             raise
-        self._width = array
-        self._hline_string = None
+        self._width_explicit = array
         return self
 
     def set_precision(self, width):
@@ -419,7 +415,14 @@ class Texttable:
 
         if not self._header and not self._rows:
             return
-        self._compute_cols_width()
+
+        if hasattr(self, "_width_explicit"):
+            self._width = self._width_explicit
+        else:
+            self._width = self._compute_cols_width()
+
+        self._hline_string = None
+
         self._check_align()
         out = ""
         if self._has_border():
@@ -619,13 +622,10 @@ class Texttable:
     def _compute_cols_width(self):
         """Return an array with the width of each column
 
-        If a specific width has been specified, exit. If the total of the
-        columns width exceed the table desired width, another width will be
-        computed to fit, and cells will be wrapped.
+        If the total of the columns width exceed the table desired width,
+        another width will be computed to fit, and cells will be wrapped.
         """
 
-        if hasattr(self, "_width"):
-            return
         maxi = []
         if self._header:
             maxi = [ self._len_cell(x) for x in self._header ]
@@ -654,7 +654,7 @@ class Texttable:
                     available_width -= 1
                 i = (i + 1) % ncols
             maxi = newmaxi
-        self._width = maxi
+        return maxi
 
     def _check_align(self):
         """Check if alignment has been specified, set default one if not
