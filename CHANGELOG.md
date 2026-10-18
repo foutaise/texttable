@@ -1,5 +1,8 @@
 # Version History
 
+v1.7.2 (2026-10-18)
+* Recompute automatic column widths when redrawing tables (https://github.com/foutaise/texttable/pull/94)
+
 v1.7.1 (2026-10-12)
 * Consume Python 3 row iterators when reading table headers (https://github.com/foutaise/texttable/pull/92)
 * Invalidate horizontal lines when characters or widths change (https://github.com/foutaise/texttable/pull/93)

@@ -12,11 +12,11 @@ with open("README.md") as f:
 
 setup(
     name="texttable",
-    version="1.7.1",
+    version="1.7.2",
     author="Gerome Fournier",
     author_email="jef@foutaise.org",
     url="https://github.com/foutaise/texttable/",
-    download_url="https://github.com/foutaise/texttable/archive/v1.7.1.tar.gz",
+    download_url="https://github.com/foutaise/texttable/archive/v1.7.2.tar.gz",
     license="MIT",
     py_modules=["texttable"],
     description=DESCRIPTION,
