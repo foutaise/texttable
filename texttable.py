@@ -208,11 +208,21 @@ class Texttable:
         """Reset the instance
 
         - reset rows and header
+        - reset the per-column settings (dtype, alignment, vertical alignment,
+          header alignment and explicit widths)
         """
 
         self._row_size = None
         self._header = []
         self._rows = []
+        # Column settings are sized for the previous table. Keeping them makes a
+        # reused instance fail or draw a ragged table when the new table has a
+        # different number of columns, so drop them and let them be recreated
+        # with their defaults.
+        for attr in ("_dtype", "_align", "_valign", "_header_align",
+                     "_width_explicit"):
+            if hasattr(self, attr):
+                delattr(self, attr)
         return self
 
     def set_max_width(self, max_width):
