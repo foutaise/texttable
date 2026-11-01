@@ -388,3 +388,41 @@ def test_bool():
         12       False
         34.200   True
     ''')
+
+
+def test_reset_clears_column_settings():
+    table = Texttable()
+    table.set_cols_dtype(["t", "t"])
+    table.set_cols_align(["r", "r"])
+    table.set_cols_valign(["b", "b"])
+    table.set_header_align(["l", "l"])
+    table.set_cols_width([20, 20])
+    table.add_rows([["a", "b"], ["1", "2"]])
+    table.reset()
+    table.add_rows([["a", "b"], ["1", "2"]])
+
+    fresh = Texttable()
+    fresh.add_rows([["a", "b"], ["1", "2"]])
+    assert clean(table.draw()) == clean(fresh.draw())
+
+
+def test_reset_allows_table_with_more_columns():
+    table = Texttable()
+    table.set_cols_dtype(["t", "t"])
+    table.add_rows([["a", "b"], ["1", "2"]])
+    table.reset()
+    # a stale two-column dtype used to raise IndexError here
+    table.add_rows([["x", "y", "z"], ["1", "2", "3"]])
+    assert len(table.draw().splitlines()) == 5
+
+
+def test_reset_clears_explicit_column_widths():
+    table = Texttable()
+    table.set_cols_width([10, 10, 10])
+    table.add_rows([["a", "b", "c"], ["1", "2", "3"]])
+    table.reset()
+    table.add_rows([["a", "b"], ["1", "2"]])
+
+    fresh = Texttable()
+    fresh.add_rows([["a", "b"], ["1", "2"]])
+    assert clean(table.draw()) == clean(fresh.draw())
