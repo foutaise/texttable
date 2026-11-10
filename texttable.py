@@ -456,8 +456,12 @@ class Texttable:
         """
         if type(x) == int:
             return str(x)
-        else:
-            return str(int(round(cls._to_float(x))))
+        if isinstance(x, (unicode_type, bytes_type)):
+            try:
+                return str(int(x))
+            except ValueError:
+                pass
+        return str(int(round(cls._to_float(x))))
 
     @classmethod
     def _fmt_float(cls, x, **kw):

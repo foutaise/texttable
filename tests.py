@@ -1,5 +1,6 @@
 #coding: utf-8
 
+import csv
 import re
 import sys
 from textwrap import dedent
@@ -297,6 +298,67 @@ def test_user_dtype():
         | a   |         1s |     [3] |
         +-----+------------+---------+
     ''')
+
+@pytest.mark.parametrize('value, expected', [
+    (u'9007199254740993', '9007199254740993'),
+    (b'9007199254740993', '9007199254740993'),
+    ('+0009007199254740993', '9007199254740993'),
+    (' 9007199254740993 ', '9007199254740993'),
+    ('-9007199254740993', '-9007199254740993'),
+])
+def test_integer_dtype_preserves_integer_strings(value, expected):
+    table = Texttable(max_width=0).set_deco(0).set_cols_dtype(['i'])
+    table.add_row([value])
+    assert table.draw() == expected
+
+def test_integer_dtype_csv():
+    rows = list(csv.reader([
+        'account_id',
+        '9007199254740993',
+        '18014398509481983',
+        '9223372036854775807',
+        '-9223372036854775807',
+    ]))
+    original = [row[:] for row in rows]
+    table = Texttable(max_width=0).set_cols_dtype(['i']).add_rows(rows)
+    assert clean(table.draw()) == dedent('''\
+        +----------------------+
+        |      account_id      |
+        +======================+
+        | 9007199254740993     |
+        +----------------------+
+        | 18014398509481983    |
+        +----------------------+
+        | 9223372036854775807  |
+        +----------------------+
+        | -9223372036854775807 |
+        +----------------------+
+    ''')
+    assert rows == original
+
+@pytest.mark.parametrize('value, expected', [
+    ('123', '123'),
+    ('-123', '-123'),
+    ('+123', '123'),
+    ('000123', '123'),
+    (' 123 ', '123'),
+    ('89.6', '90'),
+    ('89.4', '89'),
+    ('-89.6', '-90'),
+    ('2.5', '2' if sys.version_info >= (3,) else '3'),
+    ('3.5', '4'),
+    ('1e3', '1000'),
+    ('9e-1', '1'),
+    ('unavailable', 'unavailable'),
+    (None, 'None'),
+    (sys.maxsize, str(sys.maxsize)),
+    (-sys.maxsize, str(-sys.maxsize)),
+    (89.6, '90'),
+])
+def test_integer_dtype_conversion(value, expected):
+    table = Texttable(max_width=0).set_deco(0).set_cols_dtype(['i'])
+    table.add_row([value])
+    assert table.draw() == expected
 
 def test_cjkwarp():
     try:
