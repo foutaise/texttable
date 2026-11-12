@@ -1,5 +1,8 @@
 # Version History
 
+v1.7.3 (2026-11-12)
+* Preserve precision of integer strings in integer columns (https://github.com/foutaise/texttable/pull/96)
+
 v1.7.2 (2026-10-18)
 * Recompute automatic column widths when redrawing tables (https://github.com/foutaise/texttable/pull/94)
 
