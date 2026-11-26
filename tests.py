@@ -418,3 +418,22 @@ def test_integer_dtype_conversion(value, expected):
     table = Texttable(max_width=0).set_deco(0).set_cols_dtype(['i'])
     table.add_row([value])
     assert table.draw() == expected
+
+@pytest.mark.parametrize('value, expected', [
+    (float('inf'), 'inf'),
+    (float('-inf'), '-inf'),
+    (float('nan'), 'nan'),
+    ('nan', 'nan'),
+    ('1e400', '1e400'),
+])
+def test_integer_dtype_non_finite_values(value, expected):
+    table = Texttable(max_width=0).set_deco(0).set_cols_dtype(['i'])
+    table.add_row([value])
+    assert table.draw() == expected
+
+@pytest.mark.parametrize('dtype', ['a', 'f', 'e'])
+@pytest.mark.parametrize('value', [10 ** 400, -10 ** 400])
+def test_float_dtype_huge_integers(dtype, value):
+    table = Texttable(max_width=0).set_deco(0).set_cols_dtype([dtype])
+    table.add_row([value])
+    assert table.draw() == str(value)
