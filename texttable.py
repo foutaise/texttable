@@ -447,7 +447,7 @@ class Texttable:
             raise FallbackToText()
         try:
             return float(x)
-        except (TypeError, ValueError):
+        except (TypeError, ValueError, OverflowError):
             raise FallbackToText()
 
     @classmethod
@@ -461,7 +461,10 @@ class Texttable:
                 return str(int(x))
             except ValueError:
                 pass
-        return str(int(round(cls._to_float(x))))
+        try:
+            return str(int(round(cls._to_float(x))))
+        except (ValueError, OverflowError):
+            raise FallbackToText()
 
     @classmethod
     def _fmt_float(cls, x, **kw):
