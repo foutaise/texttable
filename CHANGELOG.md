@@ -1,5 +1,8 @@
 # Version History
 
+v1.7.4 (2026-11-27)
+* Fall back to text for NaN, inf and huge ints in numeric columns (https://github.com/foutaise/texttable/pull/97)
+
 v1.7.3 (2026-11-12)
 * Preserve precision of integer strings in integer columns (https://github.com/foutaise/texttable/pull/96)
 
